@@ -1,7 +1,6 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import { getCollection } from 'astro:content';
-import { global } from '../styles/global.css';
 
 const posts = await getCollection('blog');
 posts.sort((a, b) => b.data.date.getTime() - a.data.date.getTime()); // Sort by date, newest first
