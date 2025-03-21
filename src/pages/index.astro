@@ -1,11 +1,23 @@
 ---
-import Welcome from '../components/Welcome.astro';
 import Layout from '../layouts/Layout.astro';
+import { getCollection } from 'astro:content';
+import { global } from '../styles/global.css';
 
-// Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
-// Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
+const posts = await getCollection('blog');
+posts.sort((a, b) => b.data.date.getTime() - a.data.date.getTime()); // Sort by date, newest first
 ---
 
-<Layout>
-	<Welcome />
+<Layout title="My Blog">
+  <h2 class="text-xl font-semibold mb-4">Posts</h2>
+  <ul class="space-y-4">
+    {posts.map(post => (
+      <li>
+        <a href={`/blog/${post.slug}`} class="text-blue-600 hover:underline">
+          {post.data.title}
+        </a>
+        <p class="text-sm text-gray-500">{post.data.date.toLocaleDateString()}</p>
+        <p>{post.data.description}</p>
+      </li>
+    ))}
+  </ul>
 </Layout>
