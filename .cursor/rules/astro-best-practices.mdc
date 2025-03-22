@@ -1,0 +1,223 @@
+---
+description: Astro best practices
+globs: *.astro,*.tsx
+alwaysApply: false
+---
+Here’s your entire guide condensed into a single Markdown file, suitable for saving as, say, `best-practices.md` in your project. It retains all the key points and structure from my previous response, optimized for readability in Markdown format.
+
+```markdown
+# Best Practices for Developing Your Astro Blog
+
+Now that your Astro blog is set up with TypeScript, Tailwind, React, and a GitHub repository, here are best practices and key things to know as you develop it. Your goals are speed, SEO, and a minimal yet efficient design (inspired by Anthony Fu’s work), so these recommendations align with that vision while ensuring maintainability and scalability.
+
+## 1. Project Structure and Organization
+
+- **Keep it Modular**: Stick to the structure: `src/components/`, `src/layouts/`, `src/pages/`, `src/content/`, `src/styles/`. Group related components (e.g., `src/components/blog/PostCard.tsx`) and use subdirectories in `src/content/` (e.g., `blog/`, `notes/`).
+- **Use Content Collections**: Define schemas in `src/content/config.ts` with `zod` for type safety:
+  ```typescript
+  const blogCollection = defineCollection({
+    type: 'content',
+    schema: z.object({
+      title: z.string(),
+      date: z.date(),
+      description: z.string().optional(),
+    }),
+  });
+
+```
+
+- **Avoid Clutter**: Keep `src/pages/` lean—only routes (e.g., `index.astro`, `blog/[slug].astro`). Move logic to components or `src/lib/`.
+
+## 2. Performance Optimization (Speed Focus)
+
+- **Minimize Client-Side JS**: Use React components with `client:*` directives (e.g., `client:load`, `client:visible`) only where needed:
+Test with `npm run build` and `npm run preview`.
+    
+    ```
+    <LikeButton client:visible />
+    
+    ```
+    
+- **Optimize Images**: Use Astro’s `<Image>` component:
+Install with `npx astro add image`.
+    
+    ```
+    import { Image } from 'astro:assets';
+    import myImage from '../assets/my-image.jpg';
+    
+    <Image src={myImage} alt="Description" width={800} height={400} />
+    
+    ```
+    
+- **Static-First**: Prefer `output: 'static'` in `astro.config.mjs` for fast, static hosting.
+- **Bundle and Minify**: Check `dist/` after build. Use Lighthouse to audit performance.
+
+## 3. SEO Best Practices
+
+- **Dynamic Meta Tags**: Enhance `Layout.astro`:
+    
+    ```
+    ---
+    interface Props {
+      title: string;
+      description?: string;
+      canonicalUrl?: string;
+    }
+    const { title, description = 'My Astro Blog', canonicalUrl = Astro.url.href } = Astro.props;
+    ---
+    <head>
+      <title>{title}</title>
+      <meta name="description" content={description} />
+      <meta name="robots" content="index, follow" />
+      <link rel="canonical" href={canonicalUrl} />
+      <meta property="og:title" content={title} />
+      <meta property="og:description" content={description} />
+      <meta property="og:type" content="article" />
+    </head>
+    
+    ```
+    
+- **Sitemap and Robots**: Use `@astrojs/sitemap` and add `public/robots.txt`:
+    
+    ```
+    User-agent: *
+    Allow: /
+    Sitemap: <https://yourdomain.com/sitemap.xml>
+    
+    ```
+    
+- **Structured Data**: Add JSON-LD in post pages:
+    
+    ```
+    <script type="application/ld+json">
+      {
+        "@context": "<https://schema.org>",
+        "@type": "BlogPosting",
+        "headline": "{post.data.title}",
+        "datePublished": "{post.data.date.toISOString()}",
+        "description": "{post.data.description}"
+      }
+    </script>
+    
+    ```
+    
+- **Fast Load Times**: Lazy-load images, defer non-critical CSS/JS.
+
+## 4. Design and Styling (Tailwind Best Practices)
+
+- **Utility-First**: Use Tailwind classes directly. Limit custom CSS to `src/styles/global.css`.
+- **Consistent Typography**: Use `@tailwindcss/typography`:
+    
+    ```
+    <div class="prose prose-sm">
+      <Content />
+    </div>
+    
+    ```
+    
+- **Responsive Design**: Use prefixes (e.g., `md:text-xl`, `lg:max-w-4xl`).
+- **Dark Mode**: Add support in `tailwind.config.mjs`:
+Apply in `Layout.astro`:
+    
+    ```jsx
+    export default {
+      darkMode: 'class',
+      theme: { extend: {} },
+    };
+    
+    ```
+    
+    ```
+    <body class="bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100">
+    
+    ```
+    
+
+## 5. Development Workflow
+
+- **Type Safety**: Define types in TypeScript:
+Run `npm run check` with `astro check`.
+    
+    ```tsx
+    import { useState } from 'react';
+    
+    export default function LikeButton() {
+      const [likes, setLikes] = useState<number>(0);
+      return <button onClick={() => setLikes(likes + 1)}>{likes}</button>;
+    }
+    
+    ```
+    
+- **Git**: Commit often (`git commit -m "feat: add post layout"`), use branches (`git checkout -b feat/post-tags`), update `.gitignore` (e.g., `.env`).
+- **Linting and Formatting**: Install ESLint/Prettier:
+Configure `.eslintrc.json`:
+Format with `npx prettier --write .`.
+    
+    ```bash
+    npm install -D eslint prettier eslint-config-prettier eslint-plugin-astro
+    npx astro add eslint
+    
+    ```
+    
+    ```json
+    {
+      "extends": ["plugin:astro/recommended", "prettier"],
+      "plugins": ["astro"]
+    }
+    
+    ```
+    
+
+## 6. Content Management
+
+- **Markdown or MDX**: Use MDX for interactivity (`npx astro add mdx`):
+    
+    ```
+    ---
+    title: "Interactive Post"
+    date: 2025-03-21
+    ---
+    import { LikeButton } from '../components/LikeButton.tsx';
+    
+    # Hello World
+    <LikeButton client:load />
+    
+    ```
+    
+- **Metadata**: Always include `title`, `date`, `description`.
+
+## 7. Deployment and Maintenance
+
+- **Static Hosting**: Deploy to Vercel/Netlify. For Vercel: link GitHub, set build command `astro build`, output `dist`.
+- **CI/CD**: Add GitHub Action (`.github/workflows/ci.yml`):
+    
+    ```yaml
+    name: CI
+    on: [push, pull_request]
+    jobs:
+      build:
+        runs-on: ubuntu-latest
+        steps:
+          - uses: actions/checkout@v4
+          - uses: actions/setup-node@v4
+            with: { node-version: 20 }
+          - run: npm ci
+          - run: npm run build
+    
+    ```
+    
+- **Analytics**: Use Vercel Analytics or Plausible.
+
+## 8. Things to Respect/Know
+
+- **Astro’s Islands**: React components are isolated. Use sparingly.
+- **File-Based Routing**: Respect `src/pages/blog/[slug].astro` for clean URLs.
+- **Minimalism**: Prioritize readability and speed over flashiness.
+- **Resources**: Astro Docs (docs.astro.build), Tailwind Docs ([tailwindcss.com](mdc:http:/tailwindcss.com)).
+
+## Final Tips
+
+- Test with `npm run preview` and Lighthouse.
+- Iterate gradually (e.g., add RSS, search later).
+- Push to GitHub regularly.
+```

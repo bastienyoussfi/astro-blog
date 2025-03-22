@@ -1,0 +1,304 @@
+@import "tailwindcss";
+
+/* src/styles/global.css */
+
+/* Define your design tokens with @theme */
+@theme {
+  /* Colors */
+  --color-background-light: #ffffff; /* Light mode background (like Anthony Fu's) */
+  --color-background-dark: #000000; /* Dark mode background */
+  --color-text-light: #000000; /* Light mode text */
+  --color-text-dark: #ffffff; /* Dark mode text */
+
+  /* Typography (for prose) */
+  --typography-max-width: 48rem;
+  --typography-margin: 0 auto;
+  --typography-color: var(--color-text-light);
+  --typography-dark-color: var(--color-text-dark);
+  --typography-link-color: #2563eb; /* blue.600 */
+  --typography-dark-link-color: #60a5fa; /* blue.400 */
+  --typography-h1-font-size: 2.5rem; /* 3xl */
+  --typography-h1-font-weight: 700; /* bold */
+  --typography-h1-margin-bottom: 1rem; /* spacing.4 */
+  --typography-h2-font-size: 1.5rem; /* 2xl */
+  --typography-h2-font-weight: 600; /* semibold */
+  --typography-h2-margin-top: 1.5rem; /* spacing.6 */
+  --typography-h2-margin-bottom: 0.75rem; /* spacing.3 */
+  --typography-code-bg: #f3f4f6; /* gray.100 */
+  --typography-dark-code-bg: rgb(14, 14, 14); /* gray.800 */
+  --typography-blockquote-border-left: 4px;
+  --typography-blockquote-border-color: #d1d5db; /* gray.300 */
+  --typography-dark-blockquote-border-color: #4b5563; /* gray.600 */
+  --typography-h1-dark-color: #ffffff; /* gray.100 */
+  --typography-h2-dark-color: #f3f4f6; /* gray.200 */
+  --typography-p-dark-color: rgb(187, 187, 187);
+
+  /* Code block theme - refined to exactly match reference */
+  --code-block-bg: #131620; /* Exact dark background matching reference */
+  --code-block-text: #e6edf3; /* GitHub Dark theme text */
+  --code-block-border-radius: 12px;
+  --code-block-padding: .75rem; /* Refined padding */
+  --code-block-line-height: 1.6;
+  --code-block-font-size: 14px;
+  --code-block-font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  --line-number-color: #4b5364; /* Exact line number color */
+  --line-number-padding: 0 0.25rem 0 0; /* Space between line number and code */
+  
+  /* Font family */
+  --font-family-sans: Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica Neue,Arial,Noto Sans,sans-serif,"Apple Color Emoji","Segoe UI Emoji",Segoe UI Symbol,"Noto Color Emoji";
+}
+
+/* Base styles (applied globally) */
+@layer base {
+  html {
+    @apply scroll-smooth;
+  }
+
+  body {
+    font-family: var(--font-family-sans);
+    background-color: var(--color-background-light);
+    color: var(--color-text-light);
+    @apply dark:bg-[var(--color-background-dark)] dark:text-[var(--color-text-dark)];
+    @apply min-h-screen;
+  }
+
+  /* Apply typography styles to prose */
+  .prose {
+    max-width: var(--typography-max-width);
+    margin: var(--typography-margin);
+    color: var(--typography-color);
+
+    a {
+      color: var(--typography-link-color);
+      text-decoration: none;
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+
+    h1 {
+      font-family: var(--font-family-sans);
+      font-size: var(--typography-h1-font-size);
+      font-weight: var(--typography-h1-font-weight);
+      margin-bottom: var(--typography-h1-margin-bottom);
+    }
+
+    h2 {
+      font-size: var(--typography-h2-font-size);
+      font-weight: var(--typography-h2-font-weight);
+      margin-top: var(--typography-h2-margin-top);
+      margin-bottom: var(--typography-h2-margin-bottom);
+    }
+
+    code {
+      background-color: var(--typography-code-bg);
+      padding: 0.25rem;
+      border-radius: 0.25rem;
+    }
+
+    /* Enhance code blocks (pre > code) */
+    pre {
+      position: relative;
+      margin: 1.75rem 0;
+      background-color: var(--code-block-bg) !important;
+      border-radius: var(--code-block-border-radius);
+      overflow: hidden;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      
+      /* Code language display */
+      &::before {
+        content: attr(data-language);
+        position: absolute;
+        top: 12px;
+        right: 12px;
+        padding: 0.15rem 0.5rem;
+        font-size: 0.7rem;
+        font-weight: 500;
+        color: #8b949e;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        z-index: 10;
+      }
+      
+      code {
+        display: block;
+        background-color: transparent !important;
+        padding: 0 0; /* Reset padding */
+        color: var(--code-block-text);
+        font-family: var(--code-block-font-family);
+        line-height: var(--code-block-line-height);
+        font-size: var(--code-block-font-size);
+        overflow-x: auto;
+      }
+    }
+
+    blockquote {
+      border-left-width: var(--typography-blockquote-border-left);
+      border-left-color: var(--typography-blockquote-border-color);
+      padding-left: 0;
+      font-style: italic;
+    }
+
+    /* Dark mode adjustments for prose */
+    .dark & {
+      color: var(--typography-dark-color);
+
+      a {
+        color: var(--typography-dark-link-color);
+      }
+
+      blockquote {
+        border-left-color: var(--typography-dark-blockquote-border-color);
+      }
+
+      h1 {
+        color: var(--typography-h1-dark-color);
+      }
+
+      h2 {
+        color: var(--typography-h2-dark-color);
+        margin-bottom: 1.5rem;
+      }
+
+      p {
+        color: var(--typography-p-dark-color);
+        line-height: 1.875rem;
+        font-weight: 500;
+        letter-spacing: -0.01em;
+      }
+
+      code {
+        background-color: var(--typography-dark-code-bg);
+        padding: 0;
+        border-radius: 0;
+        scrollbar-width: none;
+        -ms-overflow-style: none;
+        overflow-x: auto;
+        overflow-y: hidden;
+      }
+      code::-webkit-scrollbar {
+        display: none;
+      }
+    }
+  }
+}
+
+/* Abstracted components */
+@layer components {
+  /* Reusable container for centered content */
+  .blog-container {
+    @apply max-w-3xl mx-auto px-4;
+  }
+}
+
+/* Custom utilities */
+@layer utilities {
+  /* Utility for hiding scrollbars while keeping functionality */
+  .no-scrollbar {
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
+  }
+  .no-scrollbar::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Opera */
+  }
+}
+
+/* Shiki syntax highlighting - Enhanced code blocks */
+.astro-code {
+  counter-reset: shiki-line;
+  background-color: var(--code-block-bg) !important;
+}
+
+/* Code block container */
+.code-block {
+  padding: 0 !important;
+  margin: 1.75rem 0 !important;
+  border-radius: var(--code-block-border-radius) !important;
+  background-color: var(--code-block-bg) !important;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1) !important;
+}
+
+/* Content wrapper with proper padding */
+.astro-code-content {
+  display: table !important;
+  width: 100%;
+  padding: var(--code-block-padding) !important;
+}
+
+/* Line styling */
+.line {
+  display: table-row !important;
+}
+
+/* Line number styling */
+.line-number {
+  display: table-cell;
+  text-align: right;
+  color: var(--line-number-color) !important;
+  opacity: 0.5;
+  padding-right: 1.5rem;
+  user-select: none;
+  width: 1.5rem;
+  min-width: 1.5rem;
+  font-size: 0.875em;
+  font-family: var(--code-block-font-family) !important;
+  line-height: var(--code-block-line-height) !important;
+}
+
+/* Code tokens syntax highlighting with exact colors */
+.astro-code .keyword,
+.astro-code .token.keyword {
+  color: #ff7b72 !important; /* red for keywords */
+}
+    
+.astro-code .function,
+.astro-code .token.function {
+  color: #d2a8ff !important; /* purple for functions */
+}
+    
+.astro-code .string,
+.astro-code .token.string {
+  color: #a5d6ff !important; /* light blue for strings */
+}
+    
+.astro-code .variable,
+.astro-code .token.variable {
+  color: #79c0ff !important; /* blue for variables */
+}
+    
+.astro-code .comment,
+.astro-code .token.comment {
+  color: #8b949e !important; /* gray for comments */
+  font-style: italic;
+}
+    
+.astro-code .number,
+.astro-code .token.number {
+  color: #f2cc60 !important; /* yellow for numbers */
+}
+    
+.astro-code .operator,
+.astro-code .token.operator {
+  color: #ff7b72 !important; /* red for operators */
+}
+    
+.astro-code .punctuation,
+.astro-code .token.punctuation {
+  color: #c9d1d9 !important; /* light gray for punctuation */
+}
+
+/* Additional token styling */
+.astro-code .parameter {
+  color: #79c0ff !important; /* blue for parameters */
+}
+
+.astro-code .property {
+  color: #79c0ff !important; /* blue for properties */
+}
+
+/* Override any native Astro & Shiki styling that might conflict */
+.astro-code, 
+.astro-code span:not(.line-number) {
+  font-family: var(--code-block-font-family) !important;
+  line-height: var(--code-block-line-height) !important;
+}

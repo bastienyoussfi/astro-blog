@@ -1,35 +1,38 @@
 ---
-import "../styles/global.css";
-
 interface Props {
   title: string;
+  description?: string;
+  canonicalUrl?: string;
 }
 
-const { title } = Astro.props;
+const { title, description = 'My Astro Blog', canonicalUrl = Astro.url.href } = Astro.props;
 ---
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="dark">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>{title}</title>
-    <!-- SEO Meta Tags -->
-    <meta name="description" content="My personal blog built with Astro" />
-    <meta name="author" content="Your Name" />
-    <link rel="stylesheet" href="/styles/global.css" />
+    <meta name="description" content={description} />
+    <meta name="robots" content="index, follow" />
+    <link rel="canonical" href={canonicalUrl} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content="article" />
+    <link rel="stylesheet" href="/src/styles/globals.css" />
   </head>
-  <body class="bg-gray-50 text-gray-900 font-sans">
-    <header class="max-w-3xl mx-auto py-6">
+  <body>
+    <header class="p-6 mb-10">
       <h1 class="text-2xl font-bold">
-        <a href="/">My Blog</a>
+        <a href="/">Logo</a>
       </h1>
     </header>
-    <main class="max-w-3xl mx-auto px-4">
-      <slot /> <!-- Content goes here -->
+    <main class="blog-container px-7">
+      <slot />
     </main>
-    <footer class="max-w-3xl mx-auto py-6 text-center text-gray-500">
-      &copy; {new Date().getFullYear()} Your Name
+    <footer class="container py-6 text-center text-gray-500">
+      © {new Date().getFullYear()} Your Name
     </footer>
   </body>
 </html>
