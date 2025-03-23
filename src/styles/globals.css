@@ -315,3 +315,39 @@
   font-family: var(--code-block-font-family) !important;
   line-height: var(--code-block-line-height) !important;
 }
+
+/* Heading anchor links styles */
+.heading-with-link {
+  position: relative;
+  display: flex;
+  align-items: baseline;
+  gap: 0.25rem;
+}
+
+.heading-link {
+  opacity: 0;
+  transition: opacity 0.2s ease;
+  font-weight: normal;
+  color: #6b7280; /* Gray color */
+  text-decoration: none;
+  font-size: 1.1em;
+  position: absolute;
+  left: -1.5em;
+  width: 1em;
+  text-align: center;
+}
+
+.heading-with-link:hover .heading-link {
+  opacity: 1;
+}
+
+.heading-link-icon {
+  display: inline-block;
+}
+
+/* Media query for mobile - make links always visible on touch devices */
+@media (hover: none) {
+  .heading-link {
+    opacity: 0.5;
+  }
+}

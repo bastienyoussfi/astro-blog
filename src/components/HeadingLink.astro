@@ -1,0 +1,44 @@
+---
+interface Props {
+  as: 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6';
+  id: string;
+}
+
+const { as: Component, id } = Astro.props;
+---
+
+<Component id={id} class="heading-with-link">
+  <a href={`#${id}`} class="heading-link" aria-label={`Link to ${id} section`}>
+    <span class="heading-link-icon">#</span>
+  </a>
+  <slot />
+</Component>
+
+<style>
+  .heading-with-link {
+    position: relative;
+    display: block;
+    padding-left: 0;
+  }
+
+  .heading-link {
+    opacity: 0;
+    transition: opacity 0.2s ease;
+    font-weight: normal;
+    color: #6b7280; /* Gray color */
+    text-decoration: none;
+    font-size: 0.8em;
+    position: absolute;
+    left: -1.5em;
+    width: 1em;
+    text-align: center;
+  }
+
+  .heading-with-link:hover .heading-link {
+    opacity: 1;
+  }
+
+  .heading-link-icon {
+    display: inline-block;
+  }
+</style> 

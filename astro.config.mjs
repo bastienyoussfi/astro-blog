@@ -3,6 +3,8 @@ import tailwindcss from "@tailwindcss/vite";
 import react from "@astrojs/react";
 import sitemap from "@astrojs/sitemap";
 import icon from "astro-icon";
+import rehypeSlug from 'rehype-slug';
+import { rehypeHeadingLinks } from './src/utils/rehypeHeadingLinks.js';
 
 export default defineConfig({
   site: "https://example.com",
@@ -11,6 +13,7 @@ export default defineConfig({
   },
   integrations: [react(), sitemap(), icon()],
   markdown: {
+    rehypePlugins: [rehypeSlug, rehypeHeadingLinks],
     shikiConfig: {
       // Choose from Shiki's built-in themes
       theme: 'github-dark',
