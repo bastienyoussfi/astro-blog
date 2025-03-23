@@ -15,7 +15,7 @@ export default defineConfig({
       // Choose from Shiki's built-in themes
       theme: 'github-dark',
       // Enable word wrap to prevent horizontal scrolling
-      wrap: false,
+      wrap: true,
       // Add custom language aliases
       langs: [],
       // Customize the line numbers and container
