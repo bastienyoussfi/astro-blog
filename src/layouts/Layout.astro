@@ -1,13 +1,26 @@
 ---
 import Footer from '../components/Footer.astro';
 import Header from '../components/Header.astro';
+import { ViewTransitions } from 'astro:transitions';
+
 interface Props {
   title: string;
   description?: string;
   canonicalUrl?: string;
+  image?: string;
+  type?: 'website' | 'article';
 }
 
-const { title, description = 'My Astro Blog', canonicalUrl = Astro.url.href } = Astro.props;
+const { 
+  title, 
+  description = 'My Astro Blog', 
+  canonicalUrl = Astro.url.href,
+  image = '/images/default-og.jpg',
+  type = 'website'
+} = Astro.props;
+
+// Get the site URL from the environment or fallback to the example URL
+const siteUrl = import.meta.env.SITE || 'https://example.com';
 ---
 
 <!DOCTYPE html>
@@ -17,18 +30,59 @@ const { title, description = 'My Astro Blog', canonicalUrl = Astro.url.href } = 
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>{title}</title>
     <meta name="description" content={description} />
+    
+    <!-- View Transitions for smooth page navigation -->
+    <ViewTransitions />
+    
+    <!-- Security and Performance: Content Security Policy -->
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https:; connect-src 'self';">
+    
+    <!-- Performance optimizations -->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="theme-color" content="#111827" />
+    
+    <!-- Resource hints for performance -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    
+    <!-- DNS prefetching -->
+    <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
+    <link rel="dns-prefetch" href="https://fonts.gstatic.com" />
+    
     <meta name="robots" content="index, follow" />
     <link rel="canonical" href={canonicalUrl} />
+    
+    <!-- RSS Feed -->
+    <link rel="alternate" type="application/rss+xml" title="RSS Feed for My Astro Blog" href="/rss.xml" />
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content={type} />
+    <meta property="og:url" content={canonicalUrl} />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
-    <meta property="og:type" content="article" />
+    <meta property="og:image" content={new URL(image, siteUrl).href} />
+    
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta property="twitter:url" content={canonicalUrl} />
+    <meta property="twitter:title" content={title} />
+    <meta property="twitter:description" content={description} />
+    <meta property="twitter:image" content={new URL(image, siteUrl).href} />
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+    
     <link rel="stylesheet" href="/src/styles/globals.css" />
+    
+    <!-- Instant page loading via preloading not needed with ViewTransitions -->
   </head>
   <body>
-    <Header />
+    <Header transition:persist />
     <main class="blog-container px-7">
       <slot />
     </main>
-    <Footer />
+    <Footer transition:persist />
   </body>
 </html>

@@ -32,9 +32,19 @@ const components = {
 const currentUrl = Astro.url.href;
 const encodedTitle = encodeURIComponent(post.data.title);
 const encodedUrl = encodeURIComponent(currentUrl);
+
+// Extract the first image from post content or use default
+const defaultImage = '/images/default-og.jpg';
+// Author information
+const authorName = "Blog Author";
+const authorUrl = "https://example.com/about";
 ---
 
-<Layout title={post.data.title}>
+<Layout 
+  title={post.data.title} 
+  description={post.data.description || `${post.data.title} - Read more on My Astro Blog`}
+  canonicalUrl={currentUrl}
+  type="article">
   <article class="blog-container mb-10">
 
     <!-- Back to Home -->
@@ -52,7 +62,7 @@ const encodedUrl = encodeURIComponent(currentUrl);
     <p class="text-gray-300 font-medium opacity-50 mb-4">{formatDate(post.data.date)} · {readingTime}min</p>
 
     <!-- Article Content -->
-    <div class="prose">
+    <div class="prose optimize-images">
       <Content components={components} />
     </div>
     
@@ -69,4 +79,54 @@ const encodedUrl = encodeURIComponent(currentUrl);
     </div>
 
   </article>
+  
+  <!-- Structured Data (JSON-LD) -->
+  <script type="application/ld+json" set:html={JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    "headline": post.data.title,
+    "description": post.data.description || `${post.data.title} - Read more on My Astro Blog`,
+    "image": defaultImage,
+    "datePublished": post.data.date.toISOString(),
+    "dateModified": post.data.date.toISOString(),
+    "author": {
+      "@type": "Person",
+      "name": authorName,
+      "url": authorUrl
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "My Astro Blog",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://example.com/logo.png"
+      }
+    },
+    "mainEntityOfPage": {
+      "@type": "WebPage",
+      "@id": currentUrl
+    }
+  })}></script>
 </Layout>
+
+<style>
+  /* Add styles to automatically optimize images in content */
+  :global(.optimize-images img) {
+    max-width: 100%;
+    height: auto;
+    border-radius: 0.375rem;
+    margin: 2rem 0;
+    display: block;
+    
+    /* Add loading="lazy" attribute with CSS */
+    content-visibility: auto;
+    
+    /* Add fade-in effect */
+    opacity: 0;
+    animation: fadeIn 0.5s ease-in-out forwards;
+  }
+  
+  @keyframes fadeIn {
+    to { opacity: 1; }
+  }
+</style>

@@ -1,0 +1,9 @@
+User-agent: *
+Allow: /
+
+# Important pages
+Allow: /blog/
+Allow: /rss.xml
+
+# Site maps
+Sitemap: https://example.com/sitemap.xml 
