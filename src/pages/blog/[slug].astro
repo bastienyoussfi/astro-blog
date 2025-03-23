@@ -5,25 +5,7 @@ import { getCollection } from 'astro:content';
 import ColoredText from '../../components/ColoredText.astro';
 import PartnerLink from '../../components/PartnerLink.astro';
 import { Facebook, LinkedIn, Twitter } from '../../components/socials';
-
-/**
- * Format date
- * @param date 
- */
-function formatDate(date: Date): string {
-  const options: Intl.DateTimeFormatOptions = { month: 'short', day: 'numeric' };
-  return date.toLocaleDateString('en-US', options);
-}
-
-/**
- * Get reading time for an article (200 words per minute)
- * @param content 
- */
-function getReadingTime(content: string): number {
-  const wordsPerMinute = 200;
-  const wordCount = content.split(/\s+/).length;
-  return Math.ceil(wordCount / wordsPerMinute);
-}
+import { formatDate, getReadingTime } from '../../utils/articleUtils';
 
 /**
  * Get static paths for all blog posts
@@ -54,6 +36,8 @@ const encodedUrl = encodeURIComponent(currentUrl);
 
 <Layout title={post.data.title}>
   <article class="blog-container mb-10">
+
+    <!-- Back to Home -->
     <div class="mb-6">
       <a href="/" class="inline-flex items-center text-gray-400 hover:text-gray-200 transition-colors">
         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -62,8 +46,12 @@ const encodedUrl = encodeURIComponent(currentUrl);
         Back to Home
       </a>
     </div>
+
+    <!-- Article Header -->
     <h1 class="text-4xl font-bold mb-2">{post.data.title}</h1>
     <p class="text-gray-300 font-medium opacity-50 mb-4">{formatDate(post.data.date)} · {readingTime}min</p>
+
+    <!-- Article Content -->
     <div class="prose">
       <Content components={components} />
     </div>
@@ -75,10 +63,10 @@ const encodedUrl = encodeURIComponent(currentUrl);
         <div class="flex justify-center space-x-5">
           <Twitter encodedTitle={encodedTitle} encodedUrl={encodedUrl} />
           <LinkedIn encodedUrl={encodedUrl} />
-          <Facebook encodedUrl={encodedUrl} />
-          
+          <Facebook encodedUrl={encodedUrl} />          
         </div>
       </div>
     </div>
+
   </article>
 </Layout>
