@@ -3,6 +3,7 @@ import tailwindcss from "@tailwindcss/vite";
 import react from "@astrojs/react";
 import sitemap from "@astrojs/sitemap";
 import icon from "astro-icon";
+import mdx from "@astrojs/mdx";
 import rehypeSlug from 'rehype-slug';
 import { rehypeHeadingLinks } from './src/utils/rehypeHeadingLinks.js';
 
@@ -11,7 +12,7 @@ export default defineConfig({
   vite: {
     plugins: [tailwindcss()],
   },
-  integrations: [react(), sitemap(), icon()],
+  integrations: [react(), sitemap(), icon(), mdx()],
   markdown: {
     rehypePlugins: [rehypeSlug, rehypeHeadingLinks],
     shikiConfig: {

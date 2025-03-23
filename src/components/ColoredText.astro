@@ -1,17 +1,23 @@
 ---
-const { children, color } = Astro.props;
+const { color, text } = Astro.props;
 
 // Map color names to Tailwind's text color classes
 const colorClasses: Record<string, string> = {
-  red: 'text-red-500',
-  blue: 'text-blue-500',
-  green: 'text-green-500',
-  yellow: 'text-yellow-500',
-  purple: 'text-purple-500',
-  // Add more colors as needed
+  red: 'text-[#EB5757]',
+  blue: 'text-[#2F80ED]',
+  green: 'text-[#27AE60]',
+  yellow: 'text-[#F2C94C]',
+  purple: 'text-[#9B51E0]',
+  orange: 'text-[#F2994A]',
+  pink: 'text-[#EB5757]',
+  gray: 'text-[#828282]',
+  brown: 'text-[#9368B7]',
+  teal: 'text-[#00B5AD]',
+  lime: 'text-[#82B366]',  
+  
 };
 
 const colorClass = colorClasses[color] || `text-${color}-500`;
 ---
 
-<span class={colorClass}>{children}</span>
+<span class={colorClass}>{text}</span>

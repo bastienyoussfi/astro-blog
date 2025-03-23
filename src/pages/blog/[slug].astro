@@ -3,6 +3,7 @@ import "../../styles/globals.css";
 import Layout from '../../layouts/Layout.astro';
 import { getCollection } from 'astro:content';
 import ColoredText from '../../components/ColoredText.astro';
+import PartnerLink from '../../components/PartnerLink.astro';
 
 // Function to format date as "Mar 3"
 function formatDate(date: Date): string {
@@ -31,7 +32,8 @@ const readingTime = getReadingTime(post.body);
 
 // Define components to pass to the Content component
 const components = {
-  ColoredText
+  ColoredText,
+  PartnerLink
 };
 
 // Get current URL for sharing
