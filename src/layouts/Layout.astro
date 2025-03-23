@@ -1,4 +1,6 @@
 ---
+import Footer from '../components/Footer.astro';
+import Header from '../components/Header.astro';
 interface Props {
   title: string;
   description?: string;
@@ -23,16 +25,10 @@ const { title, description = 'My Astro Blog', canonicalUrl = Astro.url.href } = 
     <link rel="stylesheet" href="/src/styles/globals.css" />
   </head>
   <body>
-    <header class="p-6 mb-10">
-      <h1 class="text-2xl font-bold">
-        <a href="/">Logo</a>
-      </h1>
-    </header>
+    <Header />
     <main class="blog-container px-7">
       <slot />
     </main>
-    <footer class="container py-6 text-center text-gray-500">
-      © {new Date().getFullYear()} Your Name
-    </footer>
+    <Footer />
   </body>
 </html>
