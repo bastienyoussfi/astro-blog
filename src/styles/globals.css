@@ -58,7 +58,7 @@
 /* Base styles (applied globally) */
 @layer base {
   html {
-    @apply scroll-smooth;
+    @apply scroll-smooth h-full;
 
     /* Global scrollbar styling */
     scrollbar-width: thin;
@@ -107,12 +107,17 @@
     background-color: var(--color-background-light);
     color: var(--color-text-light);
     @apply dark:bg-[var(--color-background-dark)] dark:text-[var(--color-text-dark)];
-    @apply min-h-screen;
+    @apply min-h-screen flex flex-col h-full;
 
     /* Selection */
     ::selection {
       background-color: var(--color-selection);
     }
+  }
+
+  /* Main content area should take up all available space */
+  main {
+    @apply flex-grow;
   }
 
   /* Apply typography styles to prose */
@@ -242,6 +247,11 @@
   /* Reusable container for centered content */
   .blog-container {
     @apply max-w-3xl mx-auto px-4;
+  }
+
+  /* Footer styling */
+  footer {
+    @apply mt-auto py-6;
   }
 }
 
