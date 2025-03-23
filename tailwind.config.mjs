@@ -6,6 +6,15 @@ export default {
   // Enable dark mode using the 'class' strategy
   darkMode: "class",
 
+  // Safelist classes that might be used dynamically (like in components)
+  safelist: [
+    'text-red-500',
+    'text-blue-500',
+    'text-green-500',
+    'text-yellow-500',
+    'text-purple-500',
+  ],
+
   // Plugins
   plugins: [require("@tailwindcss/typography")],
 };

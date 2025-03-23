@@ -2,6 +2,7 @@
 import "../../styles/globals.css";
 import Layout from '../../layouts/Layout.astro';
 import { getCollection } from 'astro:content';
+import ColoredText from '../../components/ColoredText.astro';
 
 // Function to format date as "Mar 3"
 function formatDate(date: Date): string {
@@ -27,6 +28,11 @@ export async function getStaticPaths() {
 const { post } = Astro.props;
 const { Content } = await post.render();
 const readingTime = getReadingTime(post.body);
+
+// Define components to pass to the Content component
+const components = {
+  ColoredText
+};
 ---
 
 <Layout title={post.data.title}>
@@ -34,7 +40,7 @@ const readingTime = getReadingTime(post.body);
     <h1 class="text-4xl font-bold mb-2">{post.data.title}</h1>
     <p class="text-gray-300 font-medium opacity-50 mb-4">{formatDate(post.data.date)} · {readingTime}min</p>
     <div class="prose">
-      <Content />
+      <Content components={components} />
     </div>
   </article>
 </Layout>
