@@ -5,19 +5,49 @@ import { getCollection } from 'astro:content';
 
 const posts = await getCollection('blog');
 posts.sort((a, b) => b.data.date.getTime() - a.data.date.getTime()); // Sort by date, newest first
+
+// Group posts by year
+const postsByYear = posts.reduce((acc, post) => {
+  const year = post.data.date.getFullYear();
+  if (!acc[year]) {
+    acc[year] = [];
+  }
+  acc[year].push(post);
+  return acc;
+}, {} as Record<number, typeof posts>);
+
+// Get years sorted in descending order
+const years = Object.keys(postsByYear).map(Number).sort((a, b) => b - a);
+
+// Format function for dates
+function formatDate(date: Date) {
+  return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+}
 ---
 
 <Layout title="My Blog">
-  <h2 class="text-xl font-semibold mb-4">Posts</h2>
-  <ul class="space-y-4">
-    {posts.map(post => (
-      <li>
-        <a href={`/blog/${post.slug}`} class="text-blue-600 hover:underline">
-          {post.data.title}
-        </a>
-        <p class="text-sm text-gray-500">{post.data.date.toLocaleDateString()}</p>
-        <p>{post.data.description}</p>
-      </li>
+  <main class="max-w-3xl mx-auto px-4">
+    {years.map(year => (
+      <section class="mb-12">
+        <h2 class="text-7xl font-bold text-gray-100 mb-8">{year}</h2>
+        <ul class="space-y-6">
+          {postsByYear[year].map(post => (
+            <li>
+              <a href={`/blog/${post.slug}`} class="block hover:opacity-70 transition-opacity">
+                <div class="flex flex-col">
+                  <h3 class="text-xl font-medium">{post.data.title}</h3>
+                  <div class="text-sm text-gray-500 mt-1">
+                    {formatDate(post.data.date)}
+                    {post.data.readingTime && (
+                      <span> · {post.data.readingTime}</span>
+                    )}
+                  </div>
+                </div>
+              </a>
+            </li>
+          ))}
+        </ul>
+      </section>
     ))}
-  </ul>
+  </main>
 </Layout>
