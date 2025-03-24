@@ -12,7 +12,7 @@ export default defineConfig({
   site: "https://example.com",
   output: "static",
   compressHTML: true,
-  transitions: true,
+  transitions: false,
   vite: {
     plugins: [tailwindcss()],
     build: {

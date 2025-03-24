@@ -1,7 +1,7 @@
 ---
 import Footer from '../components/Footer.astro';
 import Header from '../components/Header.astro';
-import { ViewTransitions } from 'astro:transitions';
+import LoadingBar from '../components/LoadingBar';
 
 interface Props {
   title: string;
@@ -30,9 +30,6 @@ const siteUrl = import.meta.env.SITE || 'https://example.com';
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>{title}</title>
     <meta name="description" content={description} />
-    
-    <!-- View Transitions for smooth page navigation -->
-    <ViewTransitions />
     
     <!-- Security and Performance: Content Security Policy -->
     <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https:; connect-src 'self';">
@@ -75,14 +72,13 @@ const siteUrl = import.meta.env.SITE || 'https://example.com';
     <link rel="manifest" href="/site.webmanifest" />
     
     <link rel="stylesheet" href="/src/styles/globals.css" />
-    
-    <!-- Instant page loading via preloading not needed with ViewTransitions -->
   </head>
   <body>
-    <Header transition:persist />
+    <LoadingBar client:load />
+    <Header />
     <main class="blog-container px-7">
       <slot />
     </main>
-    <Footer transition:persist />
+    <Footer />
   </body>
 </html>
