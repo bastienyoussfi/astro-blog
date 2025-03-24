@@ -1,0 +1,98 @@
+---
+title: "The start"
+date: 2025-04-01
+description: "A deep dive into why Astro is blazing fast and how it boosts developer productivity."
+readingTime: "6 min"
+components:
+    ColoredText: "../components/ColoredText.astro"
+---
+
+## 
+
+## Exploring Astro’s Speed: A Developer’s Take
+
+Hey there! I’m Bastien, a 23-year-old software engineer obsessed with performance and clean code. Today, I’m unpacking why **Astro** feels like a rocket ship compared to other frameworks—and how it’s making my dev life way more enjoyable. Let’s dive into the nuts and bolts of its speed, with a few examples you can try yourself.
+
+## Why Astro Feels So Fast
+
+Astro’s secret sauce is its **zero-client-JS-by-default** approach. Unlike traditional frameworks that ship hefty JavaScript bundles, Astro renders everything to static HTML at build time. Only the interactive bits—like a React component—load JS, and even then, it’s opt-in with `client:*` directives.
+
+Take this snippet from my `LoadingBar.tsx`:
+
+```tsx
+import { useEffect, useState } from 'react';
+
+export default function LoadingBar() {
+  const [progress, setProgress] = useState(0);
+
+  useEffect(() => {
+    // Simulate loading progress
+    const interval = setInterval(() => {
+      setProgress(prev => (prev < 90 ? prev + 10 : 90));
+    }, 100);
+    return () => clearInterval(interval);
+  }, []);
+
+  return (
+    <div className="fixed top-0 left-0 w-full h-1">
+      <div
+        className="h-full bg-blue-500"
+        style={{ width: `${progress}%` }}
+      />
+    </div>
+  );
+}
+```
+
+In my layout, I use it like this:
+
+```jsx
+<LoadingBar client:load />
+```
+
+The client:load directive ensures this React component only runs on the client when the page loads—no unnecessary JS ships unless I say so. Compare that to a typical React app where the whole bundle might load upfront. Astro’s approach keeps things <ColoredText text="lean" color="green" /> and snappy.
+
+## Static-First Wins
+
+In astro.config.mjs, I’ve set output: 'static':
+
+```jsx
+export default defineConfig({
+  output: "static",
+  *// ...*
+});
+```
+
+This means my blog compiles to pure HTML, CSS, and minimal JS. Hosting it on Vercel or Netlify is a breeze—no server runtime needed. For a speed test, run npm run build and check the dist/ folder. You’ll see how tiny the output is—Lighthouse scores love it.
+
+## A Real-World Example
+
+Here’s how I fetch and display blog posts in index.astro:
+
+```jsx
+--
+import { getCollection } from 'astro:content';
+const posts = await getCollection('blog');
+posts.sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
+---
+<ul> {posts.map(post => ( <li> <a href={`/blog/${post.slug}`}>{post.data.title}</a> </li> ))}
+</ul>
+```
+
+No client-side fetching, no loading spinners—just instant HTML. The browser gets what it needs upfront, and users aren’t waiting around. Compare that to a SPA fetching data on mount—night and day.
+
+## SEO Bonus
+
+Astro’s static output naturally boosts SEO. My Layout.astro includes dynamic meta tags:
+
+```jsx
+<meta name="description" content={description} />
+<link rel="canonical" href={canonicalUrl} />
+<meta property="og:title" content={title} />
+```
+
+Search engines gobble this up, and with @astrojs/sitemap in the mix, my blog’s crawlable from day one.
+
+## Final Thoughts
+
+Astro’s speed isn’t just hype—it’s a game-changer for devs who value performance without complexity. Have you tried it yet? Let me know your thoughts below or ping me on X—I’d love to chat about it. Happy coding!
