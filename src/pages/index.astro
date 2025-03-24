@@ -26,7 +26,8 @@ function formatDate(date: Date) {
 ---
 
 <Layout title="My Blog">
-  <main class="max-w-3xl mx-auto px-4">
+  <main class="blog-container py-8 md:py-12">
+    <div class="mb-8 max-w-[65ch] mx-auto">
     {years.map(year => (
       <section class="mb-12">
         <h2 class="text-7xl font-bold text-gray-100 mb-8">{year}</h2>
@@ -49,5 +50,6 @@ function formatDate(date: Date) {
         </ul>
       </section>
     ))}
+    </div>
   </main>
 </Layout>

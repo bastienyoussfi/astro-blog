@@ -45,10 +45,9 @@ const authorUrl = "https://example.com/about";
   description={post.data.description || `${post.data.title} - Read more on My Astro Blog`}
   canonicalUrl={currentUrl}
   type="article">
-  <article class="blog-container mb-10">
-
+  <article class="blog-container py-8 md:py-12">
     <!-- Back to Home -->
-    <div class="mb-6">
+    <div class="mb-8 max-w-[65ch] mx-auto">
       <a href="/" class="inline-flex items-center text-gray-400 hover:text-gray-200 transition-colors">
         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
@@ -57,27 +56,30 @@ const authorUrl = "https://example.com/about";
       </a>
     </div>
 
-    <!-- Article Header -->
-    <h1 class="text-4xl font-bold mb-2">{post.data.title}</h1>
-    <p class="text-gray-300 font-medium opacity-50 mb-4">{formatDate(post.data.date)} · {readingTime}min</p>
+    <div class="max-w-[65ch] mx-auto">
+      <!-- Article Header -->
+      <header class="mb-8 md:mb-12">
+        <h1 class="text-4xl md:text-5xl font-bold mb-4">{post.data.title}</h1>
+        <p class="text-gray-300 font-medium opacity-50">{formatDate(post.data.date)} · {readingTime}min</p>
+      </header>
 
-    <!-- Article Content -->
-    <div class="prose optimize-images">
-      <Content components={components} />
-    </div>
-    
-    <!-- Social Sharing CTA -->
-    <div class="mt-16 pt-8 border-t border-gray-800">
-      <div class="text-center">
-        <h3 class="text-xl font-medium mb-4">Share this article</h3>
-        <div class="flex justify-center space-x-5">
-          <Twitter encodedTitle={encodedTitle} encodedUrl={encodedUrl} />
-          <LinkedIn encodedUrl={encodedUrl} />
-          <Facebook encodedUrl={encodedUrl} />          
+      <!-- Article Content -->
+      <div class="prose dark:prose-invert">
+        <Content components={components} />
+      </div>
+      
+      <!-- Social Sharing CTA -->
+      <div class="mt-16 pt-8 border-t border-gray-800">
+        <div class="text-center">
+          <h3 class="text-xl font-medium mb-4">Share this article</h3>
+          <div class="flex justify-center space-x-5">
+            <Twitter encodedTitle={encodedTitle} encodedUrl={encodedUrl} />
+            <LinkedIn encodedUrl={encodedUrl} />
+            <Facebook encodedUrl={encodedUrl} />          
+          </div>
         </div>
       </div>
     </div>
-
   </article>
   
   <!-- Structured Data (JSON-LD) -->

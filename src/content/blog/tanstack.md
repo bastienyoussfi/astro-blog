@@ -5,8 +5,6 @@ description: ""
 readingTime: "5 min"
 ---
 
-#
-
 ## Introduction
 
 Hey there! I'm Bastien, a 23-year-old software engineer with a passion for code. Today, I want to share something that's revolutionizing the developer community: **TanStack**. If you're battling with state management in React (or other frameworks), stick around—this might be the game-changer you need.
