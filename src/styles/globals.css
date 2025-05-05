@@ -220,7 +220,7 @@
     blockquote {
       border-left-width: var(--typography-blockquote-border-left);
       border-left-color: var(--typography-blockquote-border-color);
-      padding-left: 0;
+      padding-left: 1rem;
       font-style: italic;
     }
 
