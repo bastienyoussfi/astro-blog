@@ -1,0 +1,279 @@
+---
+import "../../../styles/globals.css";
+import Layout from "../../../layouts/Layout.astro";
+import { getCollection, type CollectionEntry } from "astro:content";
+
+export async function getStaticPaths() {
+    const journeys = await getCollection("journeys");
+    return journeys.map((journey) => ({
+        params: { journey: journey.slug },
+        props: { journey },
+    }));
+}
+
+const { journey }: { journey: CollectionEntry<"journeys"> } = Astro.props;
+const { Content } = await journey.render();
+
+// Get posts for this journey
+const allPosts = await getCollection(
+    "learn",
+    ({ data }) => !data.draft && data.journey === journey.slug,
+);
+allPosts.sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
+
+// Get projects for this journey
+const projects = await getCollection(
+    "projects",
+    ({ data }) => !data.draft && data.journey === journey.slug,
+);
+
+// Calculate progress
+const progress = journey.data.totalTopics
+    ? Math.round(
+          (journey.data.completedTopics / journey.data.totalTopics) * 100,
+      )
+    : 0;
+
+// Group posts by category
+const postsByCategory = allPosts.reduce(
+    (acc, post) => {
+        const category = post.data.category;
+        if (!acc[category]) {
+            acc[category] = [];
+        }
+        acc[category].push(post);
+        return acc;
+    },
+    {} as Record<string, typeof allPosts>,
+);
+
+const categories = Object.keys(postsByCategory);
+---
+
+<Layout title={`${journey.data.title} - Learn`}>
+    <main class="py-8 md:py-12">
+        <!-- Back to Learn -->
+        <div class="mb-8 max-w-[65ch] mx-auto">
+            <a
+                href="/learn"
+                class="inline-flex items-center text-gray-400 hover:text-gray-200 transition-colors"
+            >
+                <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    class="h-5 w-5 mr-2"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                >
+                    <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+                </svg>
+                Back to Learn
+            </a>
+        </div>
+
+        <!-- Journey Header -->
+        <div class="max-w-[65ch] mx-auto mb-12">
+            <div class="flex items-center gap-4 mb-4">
+                <span class="text-5xl">{journey.data.icon}</span>
+                <div>
+                    <h1 class="text-4xl md:text-5xl font-bold">
+                        {journey.data.title}
+                    </h1>
+                    <p class="text-gray-400 mt-2">{journey.data.description}</p>
+                </div>
+            </div>
+
+            {/* Status & Info */}
+            <div class="flex flex-wrap gap-4 text-sm text-gray-400 mb-6">
+                <div class="flex items-center gap-2">
+                    <span
+                        class={journey.data.status === "active"
+                            ? "text-green-500"
+                            : "text-yellow-500"}>●</span
+                    >
+                    <span class="capitalize">{journey.data.status}</span>
+                </div>
+                <span
+                    >Started: {
+                        journey.data.startDate.toLocaleDateString("en-US", {
+                            month: "short",
+                            year: "numeric",
+                        })
+                    }</span
+                >
+                {
+                    journey.data.estimatedDuration && (
+                        <span>Duration: {journey.data.estimatedDuration}</span>
+                    )
+                }
+            </div>
+
+            {/* Progress */}
+            {
+                journey.data.totalTopics && (
+                    <div class="mb-6">
+                        <div class="flex justify-between text-sm text-gray-400 mb-2">
+                            <span>
+                                Progress: {journey.data.completedTopics} /{" "}
+                                {journey.data.totalTopics} topics
+                            </span>
+                            <span>{progress}%</span>
+                        </div>
+                        <div class="w-full bg-gray-800 rounded-full h-3">
+                            <div
+                                class="h-3 rounded-full transition-all"
+                                style={`width: ${progress}%; background-color: ${journey.data.color}`}
+                            />
+                        </div>
+                    </div>
+                )
+            }
+
+            {/* Roadmap Link */}
+            {
+                journey.data.roadmapUrl && (
+                    <a
+                        href={journey.data.roadmapUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class="inline-flex items-center gap-2 text-sm px-4 py-2 border border-gray-800 rounded-lg hover:border-gray-700 transition-colors"
+                    >
+                        <span>View Roadmap</span>
+                        <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            class="h-4 w-4"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
+                        >
+                            <path
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                stroke-width="2"
+                                d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
+                            />
+                        </svg>
+                    </a>
+                )
+            }
+        </div>
+
+        {/* Journey Content */}
+        <div class="max-w-[65ch] mx-auto mb-16 prose dark:prose-invert">
+            <Content />
+        </div>
+
+        {/* Learning Posts */}
+        {
+            allPosts.length > 0 && (
+                <div class="max-w-[65ch] mx-auto mb-16">
+                    <h2 class="text-3xl font-bold mb-8">Learning Path</h2>
+                    {categories.map((category) => (
+                        <div class="mb-10">
+                            <h3 class="text-xl font-semibold mb-4 text-gray-300">
+                                {category}
+                            </h3>
+                            <ul class="space-y-4">
+                                {postsByCategory[category].map((post) => (
+                                    <li>
+                                        <a
+                                            href={`/learn/${journey.data.slug}/${post.slug}`}
+                                            class="block p-4 border border-gray-800 rounded-lg hover:border-gray-700 transition-all group"
+                                        >
+                                            <div class="flex items-start justify-between gap-4">
+                                                <div class="flex-1">
+                                                    <h4 class="font-medium group-hover:text-gray-300 transition-colors mb-1">
+                                                        {post.data.title}
+                                                    </h4>
+                                                    <p class="text-sm text-gray-500 mb-2">
+                                                        {post.data.description}
+                                                    </p>
+                                                    <div class="flex gap-3 text-xs text-gray-500">
+                                                        <span class="capitalize">
+                                                            {
+                                                                post.data
+                                                                    .difficulty
+                                                            }
+                                                        </span>
+                                                        <span>
+                                                            {
+                                                                post.data
+                                                                    .estimatedTime
+                                                            }
+                                                        </span>
+                                                        <span>
+                                                            {post.data.date.toLocaleDateString(
+                                                                "en-US",
+                                                                {
+                                                                    month: "short",
+                                                                    day: "numeric",
+                                                                },
+                                                            )}
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                                <div>
+                                                    <svg
+                                                        xmlns="http://www.w3.org/2000/svg"
+                                                        class="h-5 w-5 text-gray-600 group-hover:text-gray-400 transition-colors"
+                                                        fill="none"
+                                                        viewBox="0 0 24 24"
+                                                        stroke="currentColor"
+                                                    >
+                                                        <path
+                                                            stroke-linecap="round"
+                                                            stroke-linejoin="round"
+                                                            stroke-width="2"
+                                                            d="M9 5l7 7-7 7"
+                                                        />
+                                                    </svg>
+                                                </div>
+                                            </div>
+                                        </a>
+                                    </li>
+                                ))}
+                            </ul>
+                        </div>
+                    ))}
+                </div>
+            )
+        }
+
+        {/* Projects */}
+        {
+            projects.length > 0 && (
+                <div class="max-w-[65ch] mx-auto">
+                    <h2 class="text-3xl font-bold mb-8">Projects</h2>
+                    <div class="grid md:grid-cols-2 gap-4">
+                        {projects.map((project) => (
+                            <a
+                                href={`/projects/${project.slug}`}
+                                class="block p-4 border border-gray-800 rounded-lg hover:border-gray-700 transition-all group"
+                            >
+                                <h3 class="font-medium mb-2 group-hover:text-gray-300 transition-colors">
+                                    {project.data.title}
+                                </h3>
+                                <p class="text-sm text-gray-500 mb-3">
+                                    {project.data.description}
+                                </p>
+                                <div class="flex flex-wrap gap-2">
+                                    {project.data.techStack
+                                        .slice(0, 3)
+                                        .map((tech) => (
+                                            <span class="text-xs px-2 py-1 bg-gray-800 rounded">
+                                                {tech}
+                                            </span>
+                                        ))}
+                                </div>
+                            </a>
+                        ))}
+                    </div>
+                </div>
+            )
+        }
+    </main>
+</Layout>

@@ -1,30 +1,66 @@
 ---
 import { Icon } from 'astro-icon/components';
+
+const currentPath = Astro.url.pathname;
 ---
 
 <header class="p-6 mb-10 mt-2 px-10 flex justify-between items-center">
-    <h1 class="text-2xl font-bold">
-        <a href="/">BY</a>
-    </h1>
+    <div class="flex items-center gap-8">
+        <h1 class="text-2xl font-bold">
+            <a href="/">BY</a>
+        </h1>
+        
+        {/* Navigation Links */}
+        <nav class="hidden md:block">
+            <ul class="flex gap-6 text-sm">
+                <li>
+                    <a 
+                        href="/" 
+                        class={`transition-colors ${currentPath === '/' ? 'text-white' : 'text-gray-400 hover:text-white'}`}
+                    >
+                        Blog
+                    </a>
+                </li>
+                <li>
+                    <a 
+                        href="/learn" 
+                        class={`transition-colors ${currentPath.startsWith('/learn') ? 'text-white' : 'text-gray-400 hover:text-white'}`}
+                    >
+                        Learn
+                    </a>
+                </li>
+                <li>
+                    <a 
+                        href="/projects" 
+                        class={`transition-colors ${currentPath.startsWith('/projects') ? 'text-white' : 'text-gray-400 hover:text-white'}`}
+                    >
+                        Projects
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+    
+    {/* Social Icons */}
     <nav>
         <ul class="flex gap-1 space-x-4 opacity-70">
             <li>
-                <a href="https://twitter.com/bastienyoussfi_" target="_blank">
+                <a href="https://twitter.com/bastienyoussfi_" target="_blank" aria-label="Twitter">
                     <Icon name="lucide:twitter" class="w-5 h-5 text-gray-400 hover:text-white" />
                 </a>
             </li>
             <li>
-                <a href="https://github.com/bastienyoussfi" target="_blank">
+                <a href="https://github.com/bastienyoussfi" target="_blank" aria-label="GitHub">
                     <Icon name="lucide:github" class="w-5 h-5 text-gray-400 hover:text-white" />
                 </a>
             </li>
             <li>
-                <a href="https://www.linkedin.com/in/bastienyoussfi/" target="_blank">
+                <a href="https://www.linkedin.com/in/bastienyoussfi/" target="_blank" aria-label="LinkedIn">
                     <Icon name="lucide:linkedin" class="w-5 h-5 text-gray-400 hover:text-white" />
                 </a>
             </li>
             <li>
-                <a href="https://www.instagram.com/bastienyoussfi/" target="_blank">
+                <a href="https://www.instagram.com/bastienyoussfi/" target="_blank" aria-label="Instagram">
                     <Icon name="lucide:instagram" class="w-5 h-5 text-gray-400 hover:text-white" />
                 </a>
             </li>

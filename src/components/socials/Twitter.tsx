@@ -1,4 +1,10 @@
-export default function Twitter({ encodedTitle, encodedUrl }: { encodedTitle: string, encodedUrl: string }) {
+export default function Twitter({
+  encodedTitle,
+  encodedUrl,
+}: {
+  encodedTitle: string;
+  encodedUrl: string;
+}) {
   return (
     <a
       href={`https://twitter.com/intent/tweet?text=${encodedTitle}&url=${encodedUrl}`}

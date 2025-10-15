@@ -41,28 +41,31 @@ A modern, fast, and feature-rich boilerplate for building websites with [Astro](
 
 All commands are run from the root of the project, from a terminal:
 
-| Command            | Action                                       |
-| :----------------- | :------------------------------------------- |
-| `npm install`      | Installs dependencies                        |
-| `npm run dev`      | Starts local dev server at `localhost:4321`  |
-| `npm run build`    | Build your production site to `./dist/`      |
-| `npm run preview`  | Preview your build locally before deploying  |
-| `npm run astro`    | Run CLI commands like `astro add`            |
+| Command           | Action                                      |
+| :---------------- | :------------------------------------------ |
+| `npm install`     | Installs dependencies                       |
+| `npm run dev`     | Starts local dev server at `localhost:4321` |
+| `npm run build`   | Build your production site to `./dist/`     |
+| `npm run preview` | Preview your build locally before deploying |
+| `npm run astro`   | Run CLI commands like `astro add`           |
 
 ## 🛠️ Getting Started
 
 1. **Clone this repository**
+
    ```bash
    git clone https://github.com/yourusername/astro-vitesse.git my-project
    cd my-project
    ```
 
 2. **Install dependencies**
+
    ```bash
    npm install
    ```
 
 3. **Start development server**
+
    ```bash
    npm run dev
    ```
@@ -78,7 +81,7 @@ Update the `site` property in `astro.config.mjs` to your own domain:
 
 ```js
 export default defineConfig({
-  site: 'https://yourdomain.com',
+  site: "https://yourdomain.com",
   // ...
 });
 ```

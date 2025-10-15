@@ -4,8 +4,8 @@ import react from "@astrojs/react";
 import sitemap from "@astrojs/sitemap";
 import icon from "astro-icon";
 import mdx from "@astrojs/mdx";
-import rehypeSlug from 'rehype-slug';
-import { rehypeHeadingLinks } from './src/utils/rehypeHeadingLinks.js';
+import rehypeSlug from "rehype-slug";
+import { rehypeHeadingLinks } from "./src/utils/rehypeHeadingLinks.js";
 import compress from "astro-compress";
 
 export default defineConfig({
@@ -18,20 +18,18 @@ export default defineConfig({
     build: {
       minify: true,
       cssMinify: false,
-    }
+    },
   },
   integrations: [
     react({
-      include: ['**/*.tsx', '**/*.jsx'],
+      include: ["**/*.tsx", "**/*.jsx"],
     }),
     sitemap({
-      filter: (page) => !page.includes('private'),
-      changefreq: 'weekly',
+      filter: (page) => !page.includes("private"),
+      changefreq: "weekly",
       priority: 0.7,
       lastmod: new Date(),
-      customPages: [
-        'https://example.com/custom-page',
-      ],
+      customPages: ["https://example.com/custom-page"],
     }),
     icon(),
     mdx(),
@@ -47,42 +45,45 @@ export default defineConfig({
   markdown: {
     rehypePlugins: [rehypeSlug, rehypeHeadingLinks],
     shikiConfig: {
-      theme: 'github-dark',
+      theme: "github-dark",
       wrap: true,
       langs: [],
       transformers: [
         {
           pre(node) {
-            const lang = node.properties.className?.[0]?.replace(/^language-/, '');
+            const lang = node.properties.className?.[0]?.replace(
+              /^language-/,
+              "",
+            );
             if (lang) {
-              node.properties['data-language'] = lang;
+              node.properties["data-language"] = lang;
             }
-            
+
             const existingClasses = node.properties.className || [];
-            node.properties.className = [...existingClasses, 'code-block'];
+            node.properties.className = [...existingClasses, "code-block"];
           },
           line(node, line) {
-            node.properties.className = ['line'];
+            node.properties.className = ["line"];
             node.children.unshift({
-              type: 'element',
-              tagName: 'span',
-              properties: { className: ['line-number'] },
-              children: []
+              type: "element",
+              tagName: "span",
+              properties: { className: ["line-number"] },
+              children: [],
             });
           },
           code(node) {
             const content = node.children;
             node.children = [
               {
-                type: 'element',
-                tagName: 'div',
-                properties: { className: ['astro-code-content'] },
-                children: content
-              }
+                type: "element",
+                tagName: "div",
+                properties: { className: ["astro-code-content"] },
+                children: content,
+              },
             ];
-          }
-        }
-      ]
-    }
-  }
+          },
+        },
+      ],
+    },
+  },
 });
