@@ -1,6 +1,7 @@
 ---
 import "../../styles/globals.css";
 import Layout from '../../layouts/Layout.astro';
+import Icon from '../../components/Icon.astro';
 import { getCollection } from 'astro:content';
 
 // Get all journeys
@@ -29,7 +30,10 @@ const recentPosts = learnPosts.slice(0, 5);
   <main class="py-8 md:py-12">
     <!-- Hero Section -->
     <div class="max-w-[65ch] mx-auto mb-16">
-      <h1 class="text-5xl md:text-6xl font-bold mb-4">🎓 Learn in Public</h1>
+      <h1 class="text-5xl md:text-6xl font-bold mb-4 flex items-center gap-3">
+        <Icon name="star" size="3xl" />
+        Learn in Public
+      </h1>
       <p class="text-xl text-gray-400 mb-8">
         Documenting my journey from curious to competent. Learning DevOps, Machine Learning, and beyond.
       </p>
@@ -72,7 +76,7 @@ const recentPosts = learnPosts.slice(0, 5);
               class="block p-6 border border-gray-800 rounded-lg hover:border-gray-700 transition-all group"
             >
               <div class="flex items-center gap-3 mb-3">
-                <span class="text-3xl">{journey.data.icon}</span>
+                <Icon name={journey.slug} size="lg" class="flex-shrink-0" />
                 <h3 class="text-xl font-semibold group-hover:text-gray-300 transition-colors">
                   {journey.data.title}
                 </h3>

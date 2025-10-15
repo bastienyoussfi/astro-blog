@@ -1,6 +1,7 @@
 ---
 import "../../styles/globals.css";
 import Layout from '../../layouts/Layout.astro';
+import Icon from '../../components/Icon.astro';
 import { getCollection, type CollectionEntry } from 'astro:content';
 
 export async function getStaticPaths() {
@@ -55,10 +56,11 @@ const currentUrl = Astro.url.href;
       <div class="flex flex-wrap items-center gap-2 mb-4">
         {journey && (
           <span 
-            class="text-xs px-3 py-1 rounded-full font-medium"
+            class="text-xs px-3 py-1 rounded-full font-medium flex items-center gap-1.5"
             style={`background-color: ${journey.data.color}20; color: ${journey.data.color}`}
           >
-            {journey.data.icon} {journey.data.title}
+            <Icon name={journey.slug} size="xs" />
+            {journey.data.title}
           </span>
         )}
         <span class={`text-xs px-3 py-1 rounded-full capitalize ${
@@ -111,7 +113,8 @@ const currentUrl = Astro.url.href;
             rel="noopener noreferrer"
             class="inline-flex items-center gap-2 px-4 py-2 bg-gray-800 hover:bg-gray-700 rounded-lg transition-colors text-sm"
           >
-            📖 Documentation
+            <Icon name="book" size="sm" />
+            Documentation
           </a>
         )}
       </div>
@@ -132,7 +135,10 @@ const currentUrl = Astro.url.href;
     {/* Problem Statement */}
     {project.data.problemStatement && (
       <div class="max-w-[65ch] mx-auto mb-12 p-6 bg-gray-900/50 border border-gray-800 rounded-lg">
-        <h2 class="text-lg font-semibold mb-3">🎯 Problem Statement</h2>
+        <h2 class="text-lg font-semibold mb-3 flex items-center gap-2">
+          <Icon name="target" size="md" />
+          Problem Statement
+        </h2>
         <p class="text-gray-300">{project.data.problemStatement}</p>
       </div>
     )}
@@ -145,7 +151,10 @@ const currentUrl = Astro.url.href;
     {/* Key Learnings */}
     {project.data.keyLearnings.length > 0 && (
       <div class="max-w-[65ch] mx-auto mb-12">
-        <h2 class="text-2xl font-bold mb-6">💡 Key Learnings</h2>
+        <h2 class="text-2xl font-bold mb-6 flex items-center gap-2">
+          <Icon name="lightbulb" size="md" />
+          Key Learnings
+        </h2>
         <ul class="space-y-3">
           {project.data.keyLearnings.map(learning => (
             <li class="flex items-start gap-3">
@@ -160,7 +169,10 @@ const currentUrl = Astro.url.href;
     {/* Challenges */}
     {project.data.challenges && project.data.challenges.length > 0 && (
       <div class="max-w-[65ch] mx-auto mb-12">
-        <h2 class="text-2xl font-bold mb-6">⚡ Challenges</h2>
+        <h2 class="text-2xl font-bold mb-6 flex items-center gap-2">
+          <Icon name="bolt" size="md" />
+          Challenges
+        </h2>
         <ul class="space-y-3">
           {project.data.challenges.map(challenge => (
             <li class="flex items-start gap-3">
@@ -175,7 +187,10 @@ const currentUrl = Astro.url.href;
     {/* Future Improvements */}
     {project.data.improvements && project.data.improvements.length > 0 && (
       <div class="max-w-[65ch] mx-auto mb-12">
-        <h2 class="text-2xl font-bold mb-6">🚀 Future Improvements</h2>
+        <h2 class="text-2xl font-bold mb-6 flex items-center gap-2">
+          <Icon name="rocket" size="md" />
+          Future Improvements
+        </h2>
         <ul class="space-y-3">
           {project.data.improvements.map(improvement => (
             <li class="flex items-start gap-3">
@@ -190,7 +205,10 @@ const currentUrl = Astro.url.href;
     {/* Related Learning Posts */}
     {relatedPosts.length > 0 && (
       <div class="max-w-[65ch] mx-auto mb-16">
-        <h2 class="text-2xl font-bold mb-6">📚 Related Learning</h2>
+        <h2 class="text-2xl font-bold mb-6 flex items-center gap-2">
+          <Icon name="book" size="md" />
+          Related Learning
+        </h2>
         <ul class="space-y-4">
           {relatedPosts.map(post => post && (
             <li>

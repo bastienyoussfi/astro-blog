@@ -1,6 +1,7 @@
 ---
 import "../../../styles/globals.css";
 import Layout from '../../../layouts/Layout.astro';
+import Icon from '../../../components/Icon.astro';
 import { getCollection, type CollectionEntry } from 'astro:content';
 
 export async function getStaticPaths() {
@@ -66,10 +67,11 @@ const currentUrl = Astro.url.href;
       {journey && (
         <div class="flex items-center gap-2 mb-4">
           <span 
-            class="text-xs px-3 py-1 rounded-full font-medium"
+            class="text-xs px-3 py-1 rounded-full font-medium flex items-center gap-1.5"
             style={`background-color: ${journey.data.color}20; color: ${journey.data.color}`}
           >
-            {journey.data.icon} {journey.data.title}
+            <Icon name={journey.slug} size="xs" />
+            {journey.data.title}
           </span>
           <span class="text-xs px-3 py-1 rounded-full bg-gray-800 text-gray-400 capitalize">
             {post.data.difficulty}
@@ -96,7 +98,10 @@ const currentUrl = Astro.url.href;
     {/* Key Takeaways */}
     {post.data.keyTakeaways && post.data.keyTakeaways.length > 0 && (
       <div class="max-w-[65ch] mx-auto mb-12 p-6 bg-gray-900/50 border border-gray-800 rounded-lg">
-        <h2 class="text-lg font-semibold mb-3">🎯 Key Takeaways</h2>
+        <h2 class="text-lg font-semibold mb-3 flex items-center gap-2">
+          <Icon name="target" size="md" />
+          Key Takeaways
+        </h2>
         <ul class="space-y-2">
           {post.data.keyTakeaways.map(takeaway => (
             <li class="flex items-start gap-2 text-gray-300">
@@ -111,7 +116,10 @@ const currentUrl = Astro.url.href;
     {/* Prerequisites */}
     {post.data.prerequisites && post.data.prerequisites.length > 0 && (
       <div class="max-w-[65ch] mx-auto mb-12 p-4 bg-yellow-900/10 border border-yellow-800/30 rounded-lg">
-        <h2 class="text-sm font-semibold mb-2 text-yellow-500">📚 Prerequisites</h2>
+        <h2 class="text-sm font-semibold mb-2 text-yellow-500 flex items-center gap-2">
+          <Icon name="book" size="sm" />
+          Prerequisites
+        </h2>
         <ul class="text-sm text-gray-400 space-y-1">
           {post.data.prerequisites.map(prereq => (
             <li>• {prereq}</li>
@@ -128,7 +136,10 @@ const currentUrl = Astro.url.href;
     {/* Resources */}
     {post.data.resources && post.data.resources.length > 0 && (
       <div class="max-w-[65ch] mx-auto mb-16">
-        <h2 class="text-2xl font-bold mb-6">📖 Resources</h2>
+        <h2 class="text-2xl font-bold mb-6 flex items-center gap-2">
+          <Icon name="book" size="md" />
+          Resources
+        </h2>
         <ul class="space-y-3">
           {post.data.resources.map(resource => (
             <li>
@@ -138,13 +149,7 @@ const currentUrl = Astro.url.href;
                 rel="noopener noreferrer"
                 class="flex items-center gap-3 p-3 border border-gray-800 rounded-lg hover:border-gray-700 transition-all group"
               >
-                <span class="text-2xl">
-                  {resource.type === 'docs' && '📄'}
-                  {resource.type === 'video' && '🎥'}
-                  {resource.type === 'course' && '🎓'}
-                  {resource.type === 'article' && '📰'}
-                  {resource.type === 'tool' && '🔧'}
-                </span>
+                <Icon name={resource.type} size="md" class="flex-shrink-0" />
                 <div class="flex-1">
                   <div class="font-medium group-hover:text-gray-300 transition-colors">
                     {resource.title}
@@ -164,7 +169,10 @@ const currentUrl = Astro.url.href;
     {/* Related Projects */}
     {relatedProjects.length > 0 && (
       <div class="max-w-[65ch] mx-auto mb-16">
-        <h2 class="text-2xl font-bold mb-6">🚀 Related Projects</h2>
+        <h2 class="text-2xl font-bold mb-6 flex items-center gap-2">
+          <Icon name="rocket" size="md" />
+          Related Projects
+        </h2>
         <div class="space-y-4">
           {relatedProjects.map(project => project && (
             <a 
@@ -189,7 +197,10 @@ const currentUrl = Astro.url.href;
     {/* Related Posts */}
     {relatedPosts.length > 0 && (
       <div class="max-w-[65ch] mx-auto mb-16">
-        <h2 class="text-2xl font-bold mb-6">📚 Continue Learning</h2>
+        <h2 class="text-2xl font-bold mb-6 flex items-center gap-2">
+          <Icon name="book" size="md" />
+          Continue Learning
+        </h2>
         <ul class="space-y-4">
           {relatedPosts.map(relatedPost => (
             <li>

@@ -18,7 +18,7 @@ const journeysCollection = defineCollection({
   schema: z.object({
     title: z.string(),
     description: z.string(),
-    icon: z.string(), // emoji or icon name
+    icon: z.string().optional(), // emoji or icon name (deprecated, use slug-based icons)
     color: z.string(), // hex color for theming
     roadmapUrl: z.string().optional(),
     startDate: z.date(),
