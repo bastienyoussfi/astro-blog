@@ -5,7 +5,9 @@
   "description": "Astro Boilerplate",
   "author": "Bastien Youssfi",
   "scripts": {
+    "sync": "./scripts/sync-content.sh",
     "dev": "astro dev",
+    "prebuild": "npm run sync",
     "build": "astro build",
     "preview": "astro preview",
     "astro": "astro",
