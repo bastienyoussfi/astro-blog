@@ -59,7 +59,6 @@ const currentUrl = Astro.url.href;
             class="text-xs px-3 py-1 rounded-full font-medium flex items-center gap-1.5"
             style={`background-color: ${journey.data.color}20; color: ${journey.data.color}`}
           >
-            <Icon name={journey.slug} size="xs" />
             {journey.data.title}
           </span>
         )}
@@ -113,7 +112,6 @@ const currentUrl = Astro.url.href;
             rel="noopener noreferrer"
             class="inline-flex items-center gap-2 px-4 py-2 bg-gray-800 hover:bg-gray-700 rounded-lg transition-colors text-sm"
           >
-            <Icon name="book" size="sm" />
             Documentation
           </a>
         )}
@@ -136,7 +134,6 @@ const currentUrl = Astro.url.href;
     {project.data.problemStatement && (
       <div class="max-w-[65ch] mx-auto mb-12 p-6 bg-gray-900/50 border border-gray-800 rounded-lg">
         <h2 class="text-lg font-semibold mb-3 flex items-center gap-2">
-          <Icon name="target" size="md" />
           Problem Statement
         </h2>
         <p class="text-gray-300">{project.data.problemStatement}</p>
@@ -152,7 +149,6 @@ const currentUrl = Astro.url.href;
     {project.data.keyLearnings.length > 0 && (
       <div class="max-w-[65ch] mx-auto mb-12">
         <h2 class="text-2xl font-bold mb-6 flex items-center gap-2">
-          <Icon name="lightbulb" size="md" />
           Key Learnings
         </h2>
         <ul class="space-y-3">
@@ -170,7 +166,6 @@ const currentUrl = Astro.url.href;
     {project.data.challenges && project.data.challenges.length > 0 && (
       <div class="max-w-[65ch] mx-auto mb-12">
         <h2 class="text-2xl font-bold mb-6 flex items-center gap-2">
-          <Icon name="bolt" size="md" />
           Challenges
         </h2>
         <ul class="space-y-3">
@@ -188,7 +183,6 @@ const currentUrl = Astro.url.href;
     {project.data.improvements && project.data.improvements.length > 0 && (
       <div class="max-w-[65ch] mx-auto mb-12">
         <h2 class="text-2xl font-bold mb-6 flex items-center gap-2">
-          <Icon name="rocket" size="md" />
           Future Improvements
         </h2>
         <ul class="space-y-3">
@@ -206,7 +200,6 @@ const currentUrl = Astro.url.href;
     {relatedPosts.length > 0 && (
       <div class="max-w-[65ch] mx-auto mb-16">
         <h2 class="text-2xl font-bold mb-6 flex items-center gap-2">
-          <Icon name="book" size="md" />
           Related Learning
         </h2>
         <ul class="space-y-4">

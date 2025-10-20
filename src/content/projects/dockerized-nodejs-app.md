@@ -1,0 +1,237 @@
+---
+title: "Dockerized Node.js Web Application"
+date: 2025-10-17
+description: "Building and containerizing a simple Express.js application with Docker"
+journey: "devops"
+category: "Containers"
+techStack: ["Docker", "Node.js", "Express", "nginx"]
+status: "completed"
+difficulty: "beginner"
+githubUrl: "https://github.com/bastienyoussfi/dockerized-nodejs-app"
+keyLearnings:
+  - "Understanding Docker images and containers"
+  - "Writing efficient Dockerfiles with multi-stage builds"
+  - "Managing environment variables in containers"
+  - "Basic container networking concepts"
+  - "Using docker-compose for local development"
+challenges:
+  - "Understanding layer caching in Docker builds"
+  - "Debugging inside containers without ssh"
+  - "Managing file permissions between host and container"
+improvements:
+  - "Add health checks to the container"
+  - "Implement proper logging with volume mounts"
+  - "Set up CI/CD pipeline for automated builds"
+  - "Add docker-compose with Redis for session storage"
+duration: "1 week"
+tags: ["docker", "nodejs", "containers", "devops"]
+relatedPosts: ["linux-file-system"]
+---
+
+## Project Overview
+
+This project containerizes a simple Express.js web application using Docker. It's my first real dive into containers, and it taught me the fundamentals of Docker and why it's such a game-changer for development and deployment.
+
+## The Problem
+
+Traditional deployment involves:
+
+- "It works on my machine" syndrome
+- Complex dependency management
+- Environment inconsistencies between dev and production
+- Difficult to scale and replicate
+
+Docker solves all of these by packaging the application with its dependencies into a portable container.
+
+## What I Built
+
+A simple Express.js API with:
+
+- REST endpoints for a TODO application
+- Environment-based configuration
+- Dockerized with multi-stage builds
+- docker-compose for local development
+- nginx as a reverse proxy
+
+## Project Structure
+
+```
+dockerized-nodejs-app/
+├── Dockerfile
+├── docker-compose.yml
+├── .dockerignore
+├── nginx/
+│   └── nginx.conf
+└── src/
+    ├── index.js
+    ├── routes/
+    └── package.json
+```
+
+## The Dockerfile
+
+I learned about multi-stage builds to optimize image size:
+
+```dockerfile
+# Build stage
+FROM node:18-alpine AS builder
+
+WORKDIR /app
+
+# Copy package files
+COPY package*.json ./
+
+# Install dependencies
+RUN npm ci --only=production
+
+# Production stage
+FROM node:18-alpine
+
+WORKDIR /app
+
+# Copy from builder
+COPY --from=builder /app/node_modules ./node_modules
+COPY src/ ./src/
+
+# Non-root user for security
+USER node
+
+EXPOSE 3000
+
+CMD ["node", "src/index.js"]
+```
+
+## Docker Compose Setup
+
+For local development with nginx:
+
+```yaml
+version: "3.8"
+
+services:
+  app:
+    build: .
+    environment:
+      - NODE_ENV=production
+      - PORT=3000
+    networks:
+      - app-network
+
+  nginx:
+    image: nginx:alpine
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+    depends_on:
+      - app
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
+```
+
+## Key Commands
+
+```bash
+# Build the image
+docker build -t my-nodejs-app .
+
+# Run the container
+docker run -p 3000:3000 my-nodejs-app
+
+# Use docker-compose
+docker-compose up -d
+
+# View logs
+docker-compose logs -f app
+
+# Stop everything
+docker-compose down
+```
+
+## What I Learned
+
+### 1. Images vs Containers
+
+- **Images**: Read-only templates (the blueprint)
+- **Containers**: Running instances of images (the house built from the blueprint)
+
+### 2. Layer Caching
+
+Docker caches each layer in the Dockerfile. Ordering matters:
+
+- Copy `package.json` first
+- Install dependencies
+- Then copy source code
+
+This way, dependency installation is cached if `package.json` hasn't changed.
+
+### 3. `.dockerignore`
+
+Just like `.gitignore`, but for Docker:
+
+```
+node_modules
+npm-debug.log
+.env
+.git
+.gitignore
+README.md
+```
+
+### 4. Container Networking
+
+Containers can communicate by service name in docker-compose. The app connects to `http://redis:6379` rather than `localhost:6379`.
+
+## Challenges Faced
+
+### Permission Issues
+
+Files created inside the container were owned by root. Solution: Use the `node` user in the Dockerfile.
+
+### Debugging
+
+Can't just SSH into a container. Learned to:
+
+```bash
+docker exec -it container_name sh
+docker logs container_name
+```
+
+### Image Size
+
+Initial image was 800MB. After multi-stage build and alpine base: **150MB**.
+
+## Performance
+
+- **Build time**: ~30 seconds (with cache)
+- **Image size**: 150MB
+- **Container startup**: &lt;1 second
+- **Memory usage**: ~50MB
+
+## Next Steps
+
+Future improvements include:
+
+1. **Health checks** in the Dockerfile
+2. **Volume mounts** for logs
+3. **CI/CD pipeline** with GitHub Actions
+4. **Kubernetes deployment** (future project)
+5. **Monitoring** with Prometheus
+
+## Conclusion
+
+This project was my introduction to Docker, and I'm amazed by how powerful it is. Containers make deployment predictable, scalable, and portable.
+
+The learning curve wasn't too steep, but understanding the nuances (layers, networking, security) takes practice.
+
+**Next up**: Kubernetes! Time to orchestrate these containers at scale.
+
+## Resources
+
+- [Docker Official Docs](https://docs.docker.com/)
+- [Node.js Docker Best Practices](https://github.com/nodejs/docker-node/blob/main/docs/BestPractices.md)
+- [Docker Compose Documentation](https://docs.docker.com/compose/)
