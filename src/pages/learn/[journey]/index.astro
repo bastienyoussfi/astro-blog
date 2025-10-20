@@ -51,28 +51,14 @@ const categories = Object.keys(postsByCategory);
 ---
 
 <Layout title={`${journey.data.title} - Learn`}>
-    <main class="py-8 md:py-12">
-        <!-- Back to Learn -->
+    <main class="blog-container py-8 md:py-12">
+        <!-- Breadcrumb Navigation -->
         <div class="mb-8 max-w-[65ch] mx-auto">
-            <a
-                href="/learn"
-                class="inline-flex items-center text-gray-400 hover:text-gray-200 transition-colors"
-            >
-                <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    class="h-5 w-5 mr-2"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                >
-                    <path
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        stroke-width="2"
-                        d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
-                </svg>
-                Back to Learn
-            </a>
+            <nav class="flex items-center gap-2 text-sm text-gray-400">
+                <a href="/learn" class="hover:text-gray-200 transition-colors">Learn</a>
+                <span>/</span>
+                <span class="text-gray-500 capitalize">{journey.data.title}</span>
+            </nav>
         </div>
 
         <!-- Journey Header -->
