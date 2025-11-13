@@ -2,7 +2,9 @@
 import "../../styles/globals.css";
 import Layout from '../../layouts/Layout.astro';
 import Icon from '../../components/Icon.astro';
+import ArticleHeader from '../../components/ArticleHeader.astro';
 import { getCollection, type CollectionEntry } from 'astro:content';
+import { getReadingTime } from '../../utils/articleUtils';
 
 export async function getStaticPaths() {
   const projects = await getCollection('projects');
@@ -15,15 +17,18 @@ export async function getStaticPaths() {
 const { project }: { project: CollectionEntry<'projects'> } = Astro.props;
 const { Content } = await project.render();
 
+// Get reading time
+const readingTime = project.data.duration || `${getReadingTime(project.body)}min`;
+
 // Get the journey info
 const journeys = await getCollection('journeys');
 const journey = journeys.find(j => j.slug === project.data.journey);
 
 // Get related posts if any
-const relatedPosts = project.data.relatedPosts 
+const relatedPosts = project.data.relatedPosts
   ? await Promise.all(
-      project.data.relatedPosts.map(slug => 
-        getCollection('learn').then(posts => 
+      project.data.relatedPosts.map(slug =>
+        getCollection('learn').then(posts =>
           posts.find(p => p.slug === slug)
         )
       )
@@ -51,35 +56,17 @@ const currentUrl = Astro.url.href;
 
     <!-- Project Header -->
     <div class="max-w-[65ch] mx-auto mb-12">
-      {/* Journey & Status Badges */}
-      <div class="flex flex-wrap items-center gap-2 mb-4">
-        {journey && (
-          <span 
-            class="text-xs px-3 py-1 rounded-full font-medium flex items-center gap-1.5"
-            style={`background-color: ${journey.data.color}20; color: ${journey.data.color}`}
-          >
-            {journey.data.title}
-          </span>
-        )}
-        <span class={`text-xs px-3 py-1 rounded-full capitalize ${
-          project.data.status === 'completed' ? 'bg-green-900/30 text-green-400' :
-          project.data.status === 'in-progress' ? 'bg-yellow-900/30 text-yellow-400' :
-          'bg-gray-800 text-gray-400'
-        }`}>
-          {project.data.status.replace('-', ' ')}
-        </span>
-        <span class="text-xs px-3 py-1 rounded-full bg-gray-800 text-gray-400 capitalize">
-          {project.data.difficulty}
-        </span>
-      </div>
+      <ArticleHeader
+        title={project.data.title}
+        description={project.data.description}
+        date={project.data.date}
+        readingTime={readingTime}
+      />
 
-      <h1 class="text-4xl md:text-5xl font-bold mb-4">{project.data.title}</h1>
-      <p class="text-xl text-gray-400 mb-6">{project.data.description}</p>
-      
       {/* Links */}
-      <div class="flex flex-wrap gap-3">
+      <div class="flex flex-wrap gap-3 mt-4">
         {project.data.githubUrl && (
-          <a 
+          <a
             href={project.data.githubUrl}
             target="_blank"
             rel="noopener noreferrer"
@@ -92,7 +79,7 @@ const currentUrl = Astro.url.href;
           </a>
         )}
         {project.data.liveUrl && (
-          <a 
+          <a
             href={project.data.liveUrl}
             target="_blank"
             rel="noopener noreferrer"
@@ -105,7 +92,7 @@ const currentUrl = Astro.url.href;
           </a>
         )}
         {project.data.docsUrl && (
-          <a 
+          <a
             href={project.data.docsUrl}
             target="_blank"
             rel="noopener noreferrer"

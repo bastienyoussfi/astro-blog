@@ -4,23 +4,49 @@ import Layout from '../../layouts/Layout.astro';
 import { getCollection } from 'astro:content';
 import ColoredText from '../../components/ColoredText.astro';
 import PartnerLink from '../../components/PartnerLink.astro';
+import ArticleHeader from '../../components/ArticleHeader.astro';
 import { Facebook, LinkedIn, Twitter } from '../../components/socials';
-import { formatDate, getReadingTime } from '../../utils/articleUtils';
+import { getReadingTime } from '../../utils/articleUtils';
 
 /**
- * Get static paths for all blog posts
+ * Get static paths for all content (blog, learn, projects)
  */
 export async function getStaticPaths() {
-  const posts = await getCollection('blog');
-  return posts.map(post => ({
-    params: { slug: post.slug },
-    props: { post },
-  }));
+  const blogPosts = await getCollection('blog');
+  const learnPosts = await getCollection('learn');
+  const projects = await getCollection('projects');
+
+  return [
+    ...blogPosts.map(post => ({
+      params: { slug: post.slug },
+      props: { post, type: 'blog' as const },
+    })),
+    ...learnPosts.map(post => ({
+      params: { slug: post.slug },
+      props: { post, type: 'learn' as const },
+    })),
+    ...projects.map(post => ({
+      params: { slug: post.slug },
+      props: { post, type: 'project' as const },
+    })),
+  ];
 }
 
-const { post } = Astro.props;
+const { post, type } = Astro.props;
 const { Content } = await post.render();
-const readingTime = getReadingTime(post.body);
+
+// Get reading time based on content type
+let readingTime: string;
+if (type === 'blog') {
+  readingTime = post.data.readingTime || `${getReadingTime(post.body)}min`;
+} else if (type === 'learn') {
+  readingTime = post.data.estimatedTime || `${getReadingTime(post.body)}min`;
+} else {
+  readingTime = post.data.duration || `${getReadingTime(post.body)}min`;
+}
+
+// Get image if available
+const image = post.data.image;
 
 // Define components to pass to the Content component
 const components = {
@@ -28,8 +54,17 @@ const components = {
   PartnerLink
 };
 
-// Get current URL for sharing
+// Get current URL and canonical URL for sharing
 const currentUrl = Astro.url.href;
+
+// Set canonical URL based on content type
+let canonicalUrl = currentUrl;
+if (type === 'learn' && 'journey' in post.data) {
+  canonicalUrl = new URL(`/learn/${post.data.journey}/${post.slug}`, Astro.site || Astro.url.origin).href;
+} else if (type === 'project') {
+  canonicalUrl = new URL(`/projects/${post.slug}`, Astro.site || Astro.url.origin).href;
+}
+
 const encodedTitle = encodeURIComponent(post.data.title);
 const encodedUrl = encodeURIComponent(currentUrl);
 
@@ -40,10 +75,10 @@ const authorName = "Blog Author";
 const authorUrl = "https://example.com/about";
 ---
 
-<Layout 
-  title={post.data.title} 
+<Layout
+  title={post.data.title}
   description={post.data.description || `${post.data.title} - Read more on My Astro Blog`}
-  canonicalUrl={currentUrl}
+  canonicalUrl={canonicalUrl}
   type="article">
   <article class="blog-container py-8 md:py-12">
     <!-- Back to Home -->
@@ -58,10 +93,13 @@ const authorUrl = "https://example.com/about";
 
     <div class="max-w-[65ch] mx-auto">
       <!-- Article Header -->
-      <header class="mb-8 md:mb-12">
-        <h1 class="text-4xl md:text-5xl font-bold mb-4">{post.data.title}</h1>
-        <p class="text-gray-300 font-medium opacity-50">{formatDate(post.data.date)} · {readingTime}min</p>
-      </header>
+      <ArticleHeader
+        title={post.data.title}
+        description={post.data.description}
+        date={post.data.date}
+        readingTime={readingTime}
+        image={image}
+      />
 
       <!-- Article Content -->
       <div class="prose dark:prose-invert">
@@ -106,7 +144,7 @@ const authorUrl = "https://example.com/about";
     },
     "mainEntityOfPage": {
       "@type": "WebPage",
-      "@id": currentUrl
+      "@id": canonicalUrl
     }
   })}></script>
 </Layout>

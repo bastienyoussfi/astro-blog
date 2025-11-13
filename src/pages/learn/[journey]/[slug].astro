@@ -1,7 +1,7 @@
 ---
 import "../../../styles/globals.css";
 import Layout from '../../../layouts/Layout.astro';
-import { Image } from 'astro:assets';
+import ArticleHeader from '../../../components/ArticleHeader.astro';
 import { getCollection, type CollectionEntry } from 'astro:content';
 
 export async function getStaticPaths() {
@@ -63,39 +63,13 @@ const currentUrl = Astro.url.href;
 
     <!-- Article Header -->
     <div class="max-w-[65ch] mx-auto mb-12">
-      {/* Journey Badge */}
-      {journey && (
-        <div class="flex items-center gap-2 mb-4">
-          <span 
-            class="text-xs px-3 py-1 rounded-full font-medium flex items-center gap-1.5"
-            style={`background-color: ${journey.data.color}20; color: ${journey.data.color}`}
-          >
-            {journey.data.title}
-          </span>
-          <span class="text-xs px-3 py-1 rounded-full bg-gray-800 text-gray-400 capitalize">
-            {post.data.difficulty}
-          </span>
-        </div>
-      )}
-
-      <h1 class="text-4xl md:text-5xl font-bold mb-4">{post.data.title}</h1>
-      <p class="text-xl text-gray-400 mb-4">{post.data.description}</p>
-
-      {post.data.image && (
-        <Image src={post.data.image} alt={post.data.title} width={1000} height={1000} class="w-full h-auto rounded-lg mb-4" />
-      )}
-      
-      <div class="flex flex-wrap gap-4 text-sm text-gray-500">
-        <span>{post.data.date.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}</span>
-        <span>·</span>
-        <span>{post.data.estimatedTime}</span>
-        {post.data.category && (
-          <>
-            <span>·</span>
-            <span>{post.data.category}</span>
-          </>
-        )}
-      </div>
+      <ArticleHeader
+        title={post.data.title}
+        description={post.data.description}
+        date={post.data.date}
+        readingTime={post.data.estimatedTime}
+        image={post.data.image}
+      />
     </div>
 
     {/* Key Takeaways */}

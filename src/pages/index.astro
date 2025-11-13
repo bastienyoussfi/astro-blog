@@ -2,19 +2,50 @@
 import "../styles/globals.css";
 import Layout from '../layouts/Layout.astro';
 import { getCollection } from 'astro:content';
+import { getReadingTime } from '../utils/articleUtils';
 
-const posts = await getCollection('blog');
-posts.sort((a, b) => b.data.date.getTime() - a.data.date.getTime()); // Sort by date, newest first
+// Get all content collections (filter out drafts)
+const blogPosts = await getCollection('blog', ({ data }) => !data.draft);
+const learnPosts = await getCollection('learn', ({ data }) => !data.draft);
+const projects = await getCollection('projects', ({ data }) => !data.draft);
+
+// Merge all posts with type information, appropriate URL, and reading time
+const allPosts = [
+  ...blogPosts.map(post => ({
+    ...post,
+    type: 'blog' as const,
+    url: `/blog/${post.slug}`,
+    date: post.data.date,
+    readingTime: post.data.readingTime || `${getReadingTime(post.body)}min`,
+  })),
+  ...learnPosts.map(post => ({
+    ...post,
+    type: 'learn' as const,
+    url: `/blog/${post.slug}`,
+    date: post.data.date,
+    readingTime: post.data.estimatedTime || `${getReadingTime(post.body)}min`,
+  })),
+  ...projects.map(post => ({
+    ...post,
+    type: 'project' as const,
+    url: `/blog/${post.slug}`,
+    date: post.data.date,
+    readingTime: post.data.duration || `${getReadingTime(post.body)}min`,
+  })),
+];
+
+// Sort by date, newest first
+allPosts.sort((a, b) => b.date.getTime() - a.date.getTime());
 
 // Group posts by year
-const postsByYear = posts.reduce((acc, post) => {
-  const year = post.data.date.getFullYear();
+const postsByYear = allPosts.reduce((acc, post) => {
+  const year = post.date.getFullYear();
   if (!acc[year]) {
     acc[year] = [];
   }
   acc[year].push(post);
   return acc;
-}, {} as Record<number, typeof posts>);
+}, {} as Record<number, typeof allPosts>);
 
 // Get years sorted in descending order
 const years = Object.keys(postsByYear).map(Number).sort((a, b) => b - a);
@@ -34,14 +65,11 @@ function formatDate(date: Date) {
         <ul class="space-y-6">
           {postsByYear[year].map(post => (
             <li>
-              <a href={`/blog/${post.slug}`} class="block hover:opacity-100 opacity-70 transition-opacity">
+              <a href={post.url} class="block hover:opacity-100 opacity-70 transition-opacity">
                 <div class="flex flex-col">
                   <h3 class="text-xl font-medium">{post.data.title}</h3>
                   <div class="text-sm text-gray-500 mt-1">
-                    {formatDate(post.data.date)}
-                    {post.data.readingTime && (
-                      <span> · {post.data.readingTime}</span>
-                    )}
+                    {formatDate(post.date)} · {post.readingTime}
                   </div>
                 </div>
               </a>
