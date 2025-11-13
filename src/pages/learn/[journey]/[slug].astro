@@ -1,7 +1,7 @@
 ---
 import "../../../styles/globals.css";
 import Layout from '../../../layouts/Layout.astro';
-import Icon from '../../../components/Icon.astro';
+import { Image } from 'astro:assets';
 import { getCollection, type CollectionEntry } from 'astro:content';
 
 export async function getStaticPaths() {
@@ -80,6 +80,10 @@ const currentUrl = Astro.url.href;
 
       <h1 class="text-4xl md:text-5xl font-bold mb-4">{post.data.title}</h1>
       <p class="text-xl text-gray-400 mb-4">{post.data.description}</p>
+
+      {post.data.image && (
+        <Image src={post.data.image} alt={post.data.title} width={1000} height={1000} class="w-full h-auto rounded-lg mb-4" />
+      )}
       
       <div class="flex flex-wrap gap-4 text-sm text-gray-500">
         <span>{post.data.date.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}</span>

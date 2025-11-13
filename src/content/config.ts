@@ -5,6 +5,7 @@ const blogCollection = defineCollection({
   schema: z.object({
     title: z.string(),
     date: z.date(),
+    image: z.string().optional(),
     updatedDate: z.date().optional(),
     description: z.string().optional(),
     readingTime: z.string().optional(),
@@ -39,6 +40,7 @@ const learnCollection = defineCollection({
     date: z.date(),
     updatedDate: z.date().optional(),
     description: z.string(),
+    image: z.string().optional(),
 
     // Journey organization
     journey: z.enum(["devops", "ml"]),
