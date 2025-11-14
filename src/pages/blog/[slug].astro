@@ -9,41 +9,22 @@ import { Facebook, LinkedIn, Twitter } from '../../components/socials';
 import { getReadingTime } from '../../utils/articleUtils';
 
 /**
- * Get static paths for all content (blog, learn, projects)
+ * Get static paths for all posts from unified collection
  */
 export async function getStaticPaths() {
-  const blogPosts = await getCollection('blog');
-  const learnPosts = await getCollection('learn');
-  const projects = await getCollection('projects');
+  const allPosts = await getCollection('posts');
 
-  return [
-    ...blogPosts.map(post => ({
-      params: { slug: post.slug },
-      props: { post, type: 'blog' as const },
-    })),
-    ...learnPosts.map(post => ({
-      params: { slug: post.slug },
-      props: { post, type: 'learn' as const },
-    })),
-    ...projects.map(post => ({
-      params: { slug: post.slug },
-      props: { post, type: 'project' as const },
-    })),
-  ];
+  return allPosts.map(post => ({
+    params: { slug: post.slug },
+    props: { post },
+  }));
 }
 
-const { post, type } = Astro.props;
+const { post } = Astro.props;
 const { Content } = await post.render();
 
-// Get reading time based on content type
-let readingTime: string;
-if (type === 'blog') {
-  readingTime = post.data.readingTime || `${getReadingTime(post.body)}min`;
-} else if (type === 'learn') {
-  readingTime = post.data.estimatedTime || `${getReadingTime(post.body)}min`;
-} else {
-  readingTime = post.data.duration || `${getReadingTime(post.body)}min`;
-}
+// Get reading time from unified field
+const readingTime = post.data.timeEstimate || `${getReadingTime(post.body)} min`;
 
 // Get image if available
 const image = post.data.image;
@@ -59,9 +40,9 @@ const currentUrl = Astro.url.href;
 
 // Set canonical URL based on content type
 let canonicalUrl = currentUrl;
-if (type === 'learn' && 'journey' in post.data) {
+if (post.data.type === 'learn' && post.data.journey) {
   canonicalUrl = new URL(`/learn/${post.data.journey}/${post.slug}`, Astro.site || Astro.url.origin).href;
-} else if (type === 'project') {
+} else if (post.data.type === 'project') {
   canonicalUrl = new URL(`/projects/${post.slug}`, Astro.site || Astro.url.origin).href;
 }
 

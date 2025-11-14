@@ -5,33 +5,33 @@ import ArticleHeader from '../../../components/ArticleHeader.astro';
 import { getCollection, type CollectionEntry } from 'astro:content';
 
 export async function getStaticPaths() {
-  const posts = await getCollection('learn');
+  const posts = await getCollection('posts', ({ data }) => data.type === 'learn');
   return posts.map(post => ({
     params: { journey: post.data.journey, slug: post.slug },
     props: { post },
   }));
 }
 
-const { post }: { post: CollectionEntry<'learn'> } = Astro.props;
+const { post }: { post: CollectionEntry<'posts'> } = Astro.props;
 const { Content } = await post.render();
 
 // Get the journey info
 const journeys = await getCollection('journeys');
 const journey = journeys.find(j => j.slug === post.data.journey);
 
-// Get related posts
-const allPosts = await getCollection('learn', ({ data }) => 
-  !data.draft && data.journey === post.data.journey
+// Get related posts from unified collection
+const allPosts = await getCollection('posts', ({ data }) =>
+  !data.draft && data.type === 'learn' && data.journey === post.data.journey
 );
 const relatedPosts = allPosts
   .filter(p => p.slug !== post.slug)
   .slice(0, 3);
 
-// Get related projects if any
-const relatedProjects = post.data.relatedProjects 
+// Get related projects if any from unified collection
+const relatedProjects = post.data.relatedProjects
   ? await Promise.all(
-      post.data.relatedProjects.map(slug => 
-        getCollection('projects').then(projects => 
+      post.data.relatedProjects.map(slug =>
+        getCollection('posts', ({ data }) => data.type === 'project').then(projects =>
           projects.find(p => p.slug === slug)
         )
       )
@@ -67,7 +67,7 @@ const currentUrl = Astro.url.href;
         title={post.data.title}
         description={post.data.description}
         date={post.data.date}
-        readingTime={post.data.estimatedTime}
+        readingTime={post.data.timeEstimate}
         image={post.data.image}
       />
     </div>

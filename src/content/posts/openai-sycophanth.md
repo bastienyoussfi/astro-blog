@@ -1,8 +1,9 @@
 ---
 title: "The Risks of Misaligned Public AI: OpenAI's Sycophantic ChatGPT Update"
+type: "blog"
 date: 2025-05-05
 description: "An analysis of ChatGPT's concerning sycophantic behavior and its implications for AI ethics, user trust, and information integrity."
-readingTime: "5 min"
+timeEstimate: "5 min"
 ---
 
 ## Introduction

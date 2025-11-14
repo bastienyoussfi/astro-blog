@@ -1,6 +1,6 @@
 ---
 title: "DevOps Journey"
-description: "From zero to DevOps hero - following roadmap.sh to master infrastructure, automation, and cloud operations"
+description: "From zero to DevOps hero - expanding my knowledge and sharing"
 icon: "🚀"
 color: "#3B82F6"
 roadmapUrl: "https://roadmap.sh/devops"
@@ -14,40 +14,17 @@ goals:
   - "Implement monitoring and observability"
   - "Practice Infrastructure as Code (Terraform, Ansible)"
 totalTopics: 50
-completedTopics: 0
+completedTopics: 5
 estimatedDuration: "6-9 months"
 tags: ["devops", "infrastructure", "cloud", "automation"]
 ---
 
 ## Why DevOps?
 
-In today's fast-paced tech world, DevOps has become essential. I'm embarking on this journey to:
-
-- **Bridge the gap** between development and operations
-- **Automate everything** - from deployments to infrastructure
-- **Scale efficiently** - learn cloud-native practices
-- **Build reliability** - monitoring, logging, and observability
-
-## The Roadmap
-
-Following [roadmap.sh/devops](https://roadmap.sh/devops), I'll be covering:
-
-1. **Operating Systems & Linux** - The foundation
-2. **Networking & Security** - Understanding how systems communicate
-3. **Version Control** - Git mastery
-4. **Containers** - Docker & containerization
-5. **Orchestration** - Kubernetes
-6. **CI/CD** - Jenkins, GitHub Actions, GitLab CI
-7. **Infrastructure as Code** - Terraform, Ansible
-8. **Cloud Platforms** - AWS, GCP, or Azure
-9. **Monitoring** - Prometheus, Grafana, ELK
-10. **And more...**
+In today's fast-paced tech world, DevOps has become essential. I'm embarking on this journey to **bridge the gap** between development and operations, I am tired of not understanding fully how systems work and relying on grey areas to function.
 
 ## Learning Approach
 
-- **Learn in Public** - Document everything
-- **Build Projects** - Practical hands-on experience
-- **Daily Practice** - Consistency over intensity
-- **Community** - Engage with DevOps communities
+I'll be doing **Learn in Public**,  I want to document everything so it keeps me accountable for actually doing it and understand what I am learning. My goal is to **build projects** to get practical hands-on experience. I want to do **daily practice**, I believe in consistency over intensity. 
 
-Let's do this!
+Lastly, I am here to meet people and engage with the tech community, so do not hesitate to come and talk with me :)

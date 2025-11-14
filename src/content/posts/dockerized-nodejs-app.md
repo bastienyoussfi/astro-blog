@@ -1,6 +1,7 @@
 ---
 title: "Dockerized Node.js Web Application"
-date: 2025-10-17
+type: "project"
+date: 2025-10-28
 description: "Building and containerizing a simple Express.js application with Docker"
 journey: "devops"
 category: "Containers"
@@ -23,7 +24,7 @@ improvements:
   - "Implement proper logging with volume mounts"
   - "Set up CI/CD pipeline for automated builds"
   - "Add docker-compose with Redis for session storage"
-duration: "1 week"
+timeEstimate: "1 week"
 tags: ["docker", "nodejs", "containers", "devops"]
 relatedPosts: ["linux-file-system"]
 ---

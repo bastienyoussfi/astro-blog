@@ -28,3 +28,4 @@ pnpm-debug.log*
 .cursorrules
 .cursor/
 .cursor/rules/
+temp-content/

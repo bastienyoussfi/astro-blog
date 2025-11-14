@@ -7,28 +7,28 @@ import { getCollection, type CollectionEntry } from 'astro:content';
 import { getReadingTime } from '../../utils/articleUtils';
 
 export async function getStaticPaths() {
-  const projects = await getCollection('projects');
+  const projects = await getCollection('posts', ({ data }) => data.type === 'project');
   return projects.map(project => ({
     params: { slug: project.slug },
     props: { project },
   }));
 }
 
-const { project }: { project: CollectionEntry<'projects'> } = Astro.props;
+const { project }: { project: CollectionEntry<'posts'> } = Astro.props;
 const { Content } = await project.render();
 
-// Get reading time
-const readingTime = project.data.duration || `${getReadingTime(project.body)}min`;
+// Get reading time from unified field
+const readingTime = project.data.timeEstimate || `${getReadingTime(project.body)} min`;
 
 // Get the journey info
 const journeys = await getCollection('journeys');
 const journey = journeys.find(j => j.slug === project.data.journey);
 
-// Get related posts if any
+// Get related posts if any from unified collection
 const relatedPosts = project.data.relatedPosts
   ? await Promise.all(
       project.data.relatedPosts.map(slug =>
-        getCollection('learn').then(posts =>
+        getCollection('posts', ({ data }) => data.type === 'learn').then(posts =>
           posts.find(p => p.slug === slug)
         )
       )

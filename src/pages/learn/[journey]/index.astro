@@ -14,17 +14,17 @@ export async function getStaticPaths() {
 const { journey }: { journey: CollectionEntry<"journeys"> } = Astro.props;
 const { Content } = await journey.render();
 
-// Get posts for this journey
+// Get posts for this journey from unified collection
 const allPosts = await getCollection(
-    "learn",
-    ({ data }) => !data.draft && data.journey === journey.slug,
+    "posts",
+    ({ data }) => !data.draft && data.type === 'learn' && data.journey === journey.slug,
 );
 allPosts.sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
 
-// Get projects for this journey
+// Get projects for this journey from unified collection
 const projects = await getCollection(
-    "projects",
-    ({ data }) => !data.draft && data.journey === journey.slug,
+    "posts",
+    ({ data }) => !data.draft && data.type === 'project' && data.journey === journey.slug,
 );
 
 // Calculate progress
@@ -187,7 +187,7 @@ const categories = Object.keys(postsByCategory);
                                                         <span>
                                                             {
                                                                 post.data
-                                                                    .estimatedTime
+                                                                    .timeEstimate
                                                             }
                                                         </span>
                                                         <span>

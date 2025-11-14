@@ -4,35 +4,25 @@ import Layout from '../layouts/Layout.astro';
 import { getCollection } from 'astro:content';
 import { getReadingTime } from '../utils/articleUtils';
 
-// Get all content collections (filter out drafts)
-const blogPosts = await getCollection('blog', ({ data }) => !data.draft);
-const learnPosts = await getCollection('learn', ({ data }) => !data.draft);
-const projects = await getCollection('projects', ({ data }) => !data.draft);
+// Get all posts from unified collection (filter out drafts)
+const allPosts = (await getCollection('posts', ({ data }) => !data.draft)).map(post => {
+  // Generate appropriate URL based on type
+  let url: string;
+  if (post.data.type === 'learn') {
+    url = `/learn/${post.data.journey}/${post.slug}`;
+  } else if (post.data.type === 'project') {
+    url = `/projects/${post.slug}`;
+  } else {
+    url = `/blog/${post.slug}`;
+  }
 
-// Merge all posts with type information, appropriate URL, and reading time
-const allPosts = [
-  ...blogPosts.map(post => ({
+  return {
     ...post,
-    type: 'blog' as const,
-    url: `/blog/${post.slug}`,
+    url,
     date: post.data.date,
-    readingTime: post.data.readingTime || `${getReadingTime(post.body)}min`,
-  })),
-  ...learnPosts.map(post => ({
-    ...post,
-    type: 'learn' as const,
-    url: `/blog/${post.slug}`,
-    date: post.data.date,
-    readingTime: post.data.estimatedTime || `${getReadingTime(post.body)}min`,
-  })),
-  ...projects.map(post => ({
-    ...post,
-    type: 'project' as const,
-    url: `/blog/${post.slug}`,
-    date: post.data.date,
-    readingTime: post.data.duration || `${getReadingTime(post.body)}min`,
-  })),
-];
+    readingTime: post.data.timeEstimate || `${getReadingTime(post.body)} min`,
+  };
+});
 
 // Sort by date, newest first
 allPosts.sort((a, b) => b.date.getTime() - a.date.getTime());

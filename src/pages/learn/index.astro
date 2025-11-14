@@ -8,12 +8,12 @@ import { getCollection } from 'astro:content';
 const journeys = await getCollection('journeys');
 const activeJourneys = journeys.filter(j => j.data.status === 'active');
 
-// Get all learning posts
-const learnPosts = await getCollection('learn', ({ data }) => !data.draft);
+// Get all learning posts from unified collection
+const learnPosts = await getCollection('posts', ({ data }) => !data.draft && data.type === 'learn');
 learnPosts.sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
 
-// Get all projects
-const projects = await getCollection('projects', ({ data }) => !data.draft);
+// Get all projects from unified collection
+const projects = await getCollection('posts', ({ data }) => !data.draft && data.type === 'project');
 
 // Calculate stats
 const totalJourneys = journeys.length;
@@ -130,7 +130,7 @@ const recentPosts = learnPosts.slice(0, 5);
                   <h3 class="text-xl font-medium">{post.data.title}</h3>
                   <div class="text-sm text-gray-500 mt-1">
                     {post.data.date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
-                    <span> · {post.data.estimatedTime}</span>
+                    <span> · {post.data.timeEstimate}</span>
                   </div>
                 </div>
               </a>

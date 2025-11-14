@@ -1,8 +1,9 @@
 ---
 title: "Welcome"
+type: "blog"
 date: 2025-04-01
 description: "Beginning of Bastien Youssfi's blog"
-readingTime: "2 min"
+timeEstimate: "2 min"
 ---
 
 ## Introduction

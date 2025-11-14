@@ -4,8 +4,8 @@ import Layout from "../../layouts/Layout.astro";
 import Icon from "../../components/Icon.astro";
 import { getCollection } from "astro:content";
 
-// Get all projects
-const projects = await getCollection("projects", ({ data }) => !data.draft);
+// Get all projects from unified collection
+const projects = await getCollection("posts", ({ data }) => !data.draft && data.type === 'project');
 projects.sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
 
 // Get all journeys for filtering

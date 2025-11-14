@@ -1,19 +1,6 @@
 import { defineCollection, z } from "astro:content";
 
-const blogCollection = defineCollection({
-  type: "content",
-  schema: z.object({
-    title: z.string(),
-    date: z.date(),
-    image: z.string().optional(),
-    updatedDate: z.date().optional(),
-    description: z.string().optional(),
-    readingTime: z.string().optional(),
-    components: z.record(z.string()).optional(),
-  }),
-});
-
-// NEW: Journeys collection - Master journey metadata
+// Journeys collection - Master journey metadata
 const journeysCollection = defineCollection({
   type: "content",
   schema: z.object({
@@ -32,33 +19,36 @@ const journeysCollection = defineCollection({
   }),
 });
 
-// NEW: Learn collection - Learning posts/articles
-const learnCollection = defineCollection({
+// Unified posts collection - All content types (blog, learn, projects)
+const postsCollection = defineCollection({
   type: "content",
   schema: z.object({
+    // Core fields (all types)
     title: z.string(),
     date: z.date(),
-    updatedDate: z.date().optional(),
-    description: z.string(),
+    description: z.string().optional(),
     image: z.string().optional(),
+    updatedDate: z.date().optional(),
 
-    // Journey organization
-    journey: z.enum(["devops", "ml"]),
-    category: z.string(),
+    // Type discriminator
+    type: z.enum(["blog", "learn", "project"]),
+
+    // Journey organization (learn/project only)
+    journey: z.enum(["devops", "ml"]).optional(),
+    category: z.string().optional(),
+
+    // Common metadata
+    tags: z.array(z.string()).optional(),
+    difficulty: z.enum(["beginner", "intermediate", "advanced"]).optional(),
+    timeEstimate: z.string().optional(), // Unified: was readingTime/estimatedTime/duration
+    draft: z.boolean().optional(),
+
+    // Learn-specific fields
     phase: z.string().optional(),
-
-    // Progress tracking
-    difficulty: z.enum(["beginner", "intermediate", "advanced"]),
-    estimatedTime: z.string(),
     roadmapSection: z.string().optional(),
-
-    // Learning metadata
-    tags: z.array(z.string()),
     prerequisites: z.array(z.string()).optional(),
     relatedPosts: z.array(z.string()).optional(),
     relatedProjects: z.array(z.string()).optional(),
-
-    // Resources
     resources: z
       .array(
         z.object({
@@ -68,49 +58,25 @@ const learnCollection = defineCollection({
         }),
       )
       .optional(),
-
-    // What you learned
     keyTakeaways: z.array(z.string()).optional(),
 
-    draft: z.boolean().optional(),
-  }),
-});
-
-// NEW: Projects collection
-const projectsCollection = defineCollection({
-  type: "content",
-  schema: z.object({
-    title: z.string(),
-    date: z.date(),
-    description: z.string(),
-
-    journey: z.enum(["devops", "ml"]),
-    category: z.string(),
-
-    techStack: z.array(z.string()),
-    status: z.enum(["planning", "in-progress", "completed", "archived"]),
-    difficulty: z.enum(["beginner", "intermediate", "advanced"]),
-
+    // Project-specific fields
+    status: z.enum(["planning", "in-progress", "completed", "archived"]).optional(),
+    techStack: z.array(z.string()).optional(),
     githubUrl: z.string().optional(),
     liveUrl: z.string().optional(),
     docsUrl: z.string().optional(),
-
     problemStatement: z.string().optional(),
-    keyLearnings: z.array(z.string()),
+    keyLearnings: z.array(z.string()).optional(),
     challenges: z.array(z.string()).optional(),
     improvements: z.array(z.string()).optional(),
 
-    duration: z.string().optional(),
-    tags: z.array(z.string()),
-    relatedPosts: z.array(z.string()).optional(),
-
-    draft: z.boolean().optional(),
+    // Blog-specific fields
+    components: z.record(z.string()).optional(),
   }),
 });
 
 export const collections = {
-  blog: blogCollection,
+  posts: postsCollection,
   journeys: journeysCollection,
-  learn: learnCollection,
-  projects: projectsCollection,
 };
