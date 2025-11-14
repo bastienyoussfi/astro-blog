@@ -127,15 +127,20 @@
 
   body {
     font-family: var(--font-family-sans);
-    background-color: var(--color-background-light);
-    color: var(--color-text-light);
-    @apply dark:bg-[var(--color-background-dark)] dark:text-[var(--color-text-dark)];
+    background-color: #ffffff; /* Light mode background */
+    color: #000000; /* Light mode text */
     @apply min-h-screen flex flex-col h-full;
 
     /* Selection */
     ::selection {
       background-color: var(--color-selection);
     }
+  }
+
+  /* Dark mode body styles */
+  .dark body {
+    background-color: #000000; /* Dark mode background */
+    color: #ffffff; /* Dark mode text */
   }
 
   /* Main content area should take up all available space */

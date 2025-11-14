@@ -16,25 +16,25 @@ const currentPath = Astro.url.pathname;
             <nav class="hidden md:block">
                 <ul class="flex gap-6 text-sm">
                     <li>
-                        <a 
-                            href="/" 
-                            class={`transition-colors ${currentPath === '/' ? 'text-white' : 'text-gray-400 hover:text-white'}`}
+                        <a
+                            href="/"
+                            class={`transition-colors ${currentPath === '/' ? 'text-black dark:text-white' : 'text-gray-600 dark:text-gray-400 hover:text-black dark:hover:text-white'}`}
                         >
                             Blog
                         </a>
                     </li>
                     <li>
-                        <a 
-                            href="/learn" 
-                            class={`transition-colors ${currentPath.startsWith('/learn') ? 'text-white' : 'text-gray-400 hover:text-white'}`}
+                        <a
+                            href="/learn"
+                            class={`transition-colors ${currentPath.startsWith('/learn') ? 'text-black dark:text-white' : 'text-gray-600 dark:text-gray-400 hover:text-black dark:hover:text-white'}`}
                         >
                             Learn
                         </a>
                     </li>
                     <li>
-                        <a 
-                            href="/projects" 
-                            class={`transition-colors ${currentPath.startsWith('/projects') ? 'text-white' : 'text-gray-400 hover:text-white'}`}
+                        <a
+                            href="/projects"
+                            class={`transition-colors ${currentPath.startsWith('/projects') ? 'text-black dark:text-white' : 'text-gray-600 dark:text-gray-400 hover:text-black dark:hover:text-white'}`}
                         >
                             Projects
                         </a>
@@ -52,22 +52,22 @@ const currentPath = Astro.url.pathname;
                 <ul class="flex gap-1 space-x-4 opacity-70">
                     <li>
                         <a href="https://twitter.com/bastienyoussfi_" target="_blank" aria-label="Twitter">
-                            <Icon name="lucide:twitter" class="w-5 h-5 text-gray-400 hover:text-white" />
+                            <Icon name="lucide:twitter" class="w-5 h-5 text-gray-600 dark:text-gray-400 hover:text-black dark:hover:text-white" />
                         </a>
                     </li>
                     <li>
                         <a href="https://github.com/bastienyoussfi" target="_blank" aria-label="GitHub">
-                            <Icon name="lucide:github" class="w-5 h-5 text-gray-400 hover:text-white" />
+                            <Icon name="lucide:github" class="w-5 h-5 text-gray-600 dark:text-gray-400 hover:text-black dark:hover:text-white" />
                         </a>
                     </li>
                     <li>
                         <a href="https://www.linkedin.com/in/bastienyoussfi/" target="_blank" aria-label="LinkedIn">
-                            <Icon name="lucide:linkedin" class="w-5 h-5 text-gray-400 hover:text-white" />
+                            <Icon name="lucide:linkedin" class="w-5 h-5 text-gray-600 dark:text-gray-400 hover:text-black dark:hover:text-white" />
                         </a>
                     </li>
                     <li>
                         <a href="https://www.instagram.com/bastienyoussfi/" target="_blank" aria-label="Instagram">
-                            <Icon name="lucide:instagram" class="w-5 h-5 text-gray-400 hover:text-white" />
+                            <Icon name="lucide:instagram" class="w-5 h-5 text-gray-600 dark:text-gray-400 hover:text-black dark:hover:text-white" />
                         </a>
                     </li>
                 </ul>
@@ -76,7 +76,7 @@ const currentPath = Astro.url.pathname;
             {/* Mobile Menu Button */}
             <button
                 id="mobile-menu-button"
-                class="md:hidden text-gray-400 hover:text-white transition-colors"
+                class="md:hidden text-gray-600 dark:text-gray-400 hover:text-black dark:hover:text-white transition-colors"
                 aria-label="Toggle menu"
             >
                 <Icon name="lucide:menu" class="w-6 h-6" />
@@ -85,45 +85,45 @@ const currentPath = Astro.url.pathname;
     </div>
 
     {/* Mobile Menu */}
-    <nav id="mobile-menu" class="hidden md:hidden mt-6 pt-6 border-t border-gray-800">
+    <nav id="mobile-menu" class="hidden md:hidden mt-6 pt-6 border-t border-gray-300 dark:border-gray-800">
         <ul class="space-y-4">
             <li>
-                <a 
-                    href="/" 
-                    class={`block text-lg transition-colors ${currentPath === '/' ? 'text-white' : 'text-gray-400 hover:text-white'}`}
+                <a
+                    href="/"
+                    class={`block text-lg transition-colors ${currentPath === '/' ? 'text-black dark:text-white' : 'text-gray-600 dark:text-gray-400 hover:text-black dark:hover:text-white'}`}
                 >
                     Blog
                 </a>
             </li>
             <li>
-                <a 
-                    href="/learn" 
-                    class={`block text-lg transition-colors ${currentPath.startsWith('/learn') ? 'text-white' : 'text-gray-400 hover:text-white'}`}
+                <a
+                    href="/learn"
+                    class={`block text-lg transition-colors ${currentPath.startsWith('/learn') ? 'text-black dark:text-white' : 'text-gray-600 dark:text-gray-400 hover:text-black dark:hover:text-white'}`}
                 >
                     Learn
                 </a>
             </li>
             <li>
-                <a 
-                    href="/projects" 
-                    class={`block text-lg transition-colors ${currentPath.startsWith('/projects') ? 'text-white' : 'text-gray-400 hover:text-white'}`}
+                <a
+                    href="/projects"
+                    class={`block text-lg transition-colors ${currentPath.startsWith('/projects') ? 'text-black dark:text-white' : 'text-gray-600 dark:text-gray-400 hover:text-black dark:hover:text-white'}`}
                 >
                     Projects
                 </a>
             </li>
-            <li class="pt-4 border-t border-gray-800">
+            <li class="pt-4 border-t border-gray-300 dark:border-gray-800">
                 <div class="flex gap-6">
                     <a href="https://twitter.com/bastienyoussfi_" target="_blank" aria-label="Twitter">
-                        <Icon name="lucide:twitter" class="w-5 h-5 text-gray-400 hover:text-white" />
+                        <Icon name="lucide:twitter" class="w-5 h-5 text-gray-600 dark:text-gray-400 hover:text-black dark:hover:text-white" />
                     </a>
                     <a href="https://github.com/bastienyoussfi" target="_blank" aria-label="GitHub">
-                        <Icon name="lucide:github" class="w-5 h-5 text-gray-400 hover:text-white" />
+                        <Icon name="lucide:github" class="w-5 h-5 text-gray-600 dark:text-gray-400 hover:text-black dark:hover:text-white" />
                     </a>
                     <a href="https://www.linkedin.com/in/bastienyoussfi/" target="_blank" aria-label="LinkedIn">
-                        <Icon name="lucide:linkedin" class="w-5 h-5 text-gray-400 hover:text-white" />
+                        <Icon name="lucide:linkedin" class="w-5 h-5 text-gray-600 dark:text-gray-400 hover:text-black dark:hover:text-white" />
                     </a>
                     <a href="https://www.instagram.com/bastienyoussfi/" target="_blank" aria-label="Instagram">
-                        <Icon name="lucide:instagram" class="w-5 h-5 text-gray-400 hover:text-white" />
+                        <Icon name="lucide:instagram" class="w-5 h-5 text-gray-600 dark:text-gray-400 hover:text-black dark:hover:text-white" />
                     </a>
                 </div>
             </li>
