@@ -60,6 +60,7 @@ const authorUrl = "https://example.com/about";
   title={post.data.title}
   description={post.data.description || `${post.data.title} - Read more on My Astro Blog`}
   canonicalUrl={canonicalUrl}
+  image={image || defaultImage}
   type="article">
   <article class="blog-container py-8 md:py-12">
     <!-- Back to Home -->
