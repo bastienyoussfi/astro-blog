@@ -4,10 +4,11 @@
 
 .activity-grid-container {
   width: 100%;
+  max-width: 900px;
+  margin: 0 auto;
   display: flex;
   flex-direction: column;
-  gap: 4rem;
-  padding: 1rem 0;
+  gap: 3rem;
 }
 
 /* ========================================
@@ -19,105 +20,100 @@
 }
 
 .year-header {
-  margin-bottom: 1rem;
-  display: flex;
-  align-items: center;
+  margin-bottom: 2rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+:global(.dark) .year-header {
+  border-bottom: 1px solid #374151;
 }
 
 .year-label {
-  font-size: 1.25rem;
-  font-weight: 600;
-  color: #6b7280;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #111827;
   letter-spacing: -0.02em;
 }
 
 :global(.dark) .year-label {
-  color: #9ca3af;
+  color: #f9fafb;
 }
 
 /* ========================================
-   GRID WRAPPER
+   MONTHS CONTAINER
    ======================================== */
 
-.grid-wrapper {
-  display: flex;
-  gap: 0.5rem;
-  overflow-x: auto;
-  padding: 0.5rem 0;
-}
-
-/* ========================================
-   DAY LABELS (Left side)
-   ======================================== */
-
-.day-labels {
+.months-container {
   display: flex;
   flex-direction: column;
-  justify-content: space-around;
-  padding-right: 0.5rem;
-  font-size: 0.7rem;
-  color: #6b7280;
-  min-width: 2rem;
-}
-
-.day-label {
-  height: 14px;
-  display: flex;
-  align-items: center;
-  line-height: 1;
-}
-
-:global(.dark) .day-label {
-  color: #9ca3af;
+  gap: 2.5rem;
 }
 
 /* ========================================
-   WEEKS GRID
+   MONTH GRID (Calendar-style)
    ======================================== */
 
-.weeks-grid {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
+.month-grid {
+  width: 100%;
+}
+
+.month-header {
+  margin-bottom: 0.75rem;
+}
+
+.month-name {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: #374151;
+  letter-spacing: -0.01em;
+}
+
+:global(.dark) .month-name {
+  color: #d1d5db;
 }
 
 /* ========================================
-   MONTH LABELS (Top)
+   MONTH CALENDAR
    ======================================== */
 
-.month-labels {
+.month-calendar {
+  width: 100%;
+}
+
+/* Weekday labels (S M T W T F S) */
+.weekday-labels {
   display: grid;
-  grid-template-columns: repeat(53, 14px);
-  gap: 3px;
-  font-size: 0.7rem;
-  color: #6b7280;
-  margin-bottom: 0.25rem;
-  height: 1rem;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 8px;
+  margin-bottom: 8px;
 }
 
-.month-label {
-  white-space: nowrap;
-  font-weight: 500;
-}
-
-:global(.dark) .month-label {
+.weekday-label {
+  text-align: center;
+  font-size: 0.75rem;
+  font-weight: 600;
   color: #9ca3af;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
 }
 
-/* ========================================
-   CELLS GRID (Main Grid)
-   ======================================== */
-
-.cells-grid {
-  display: grid;
-  grid-template-columns: repeat(53, 14px);
-  gap: 3px;
+:global(.dark) .weekday-label {
+  color: #6b7280;
 }
 
-.week-column {
+/* Weeks container */
+.weeks-container {
   display: flex;
   flex-direction: column;
-  gap: 3px;
+  gap: 8px;
+}
+
+/* Week row */
+.week-row {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 8px;
 }
 
 /* ========================================
@@ -125,42 +121,71 @@
    ======================================== */
 
 .day-cell {
-  width: 14px;
-  height: 14px;
-  border-radius: 2px;
+  aspect-ratio: 1;
+  border-radius: 6px;
   cursor: pointer;
   transition: all 0.2s ease;
   position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
+  font-size: 0.875rem;
+  font-weight: 500;
+  min-height: 48px;
 }
 
-/* Empty cells (ghost cells with border) */
+/* Day number */
+.day-number {
+  position: relative;
+  z-index: 1;
+}
+
+/* Empty placeholder (days from other months) */
+.day-cell.empty-placeholder {
+  background: transparent;
+  border: none;
+  cursor: default;
+}
+
+/* Empty cells (no posts) */
 .day-cell.empty {
   background-color: transparent;
   border: 1px solid #e5e7eb;
+  color: #9ca3af;
 }
 
 :global(.dark) .day-cell.empty {
   border: 1px solid #374151;
+  color: #6b7280;
 }
 
 /* Active cells (with posts) */
 .day-cell.active {
   background-color: #ffffff;
-  border: 1px solid #000000;
+  border: 2px solid #000000;
+  color: #000000;
+  font-weight: 600;
 }
 
 :global(.dark) .day-cell.active {
   background-color: #000000;
-  border: 1px solid #ffffff;
+  border: 2px solid #ffffff;
+  color: #ffffff;
 }
 
 /* Hover effect */
-.day-cell.active:hover {
-  transform: scale(1.2);
+.day-cell.active:hover,
+.day-cell.empty:hover {
+  transform: scale(1.05);
   z-index: 10;
+}
+
+.day-cell.active:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+:global(.dark) .day-cell.active:hover {
+  box-shadow: 0 4px 12px rgba(255, 255, 255, 0.1);
 }
 
 /* ========================================
@@ -169,7 +194,7 @@
 
 /* Thick border (2+ posts) */
 .day-cell.thick-border {
-  border-width: 2px;
+  border-width: 3px;
 }
 
 /* Pulse animation (2+ posts) */
@@ -182,22 +207,22 @@
     transform: scale(1);
   }
   50% {
-    transform: scale(1.1);
+    transform: scale(1.08);
   }
 }
 
 /* Glow effect (3+ posts) */
 .day-cell.glow-effect {
-  box-shadow: 0 0 8px rgba(147, 51, 234, 0.6);
+  box-shadow: 0 0 12px rgba(147, 51, 234, 0.6);
 }
 
 :global(.dark) .day-cell.glow-effect {
-  box-shadow: 0 0 8px rgba(168, 85, 247, 0.8);
+  box-shadow: 0 0 12px rgba(168, 85, 247, 0.8);
 }
 
 /* Rainbow border (4+ posts) */
 .day-cell.rainbow-border {
-  border: 2px solid;
+  border: 3px solid;
   animation: rainbow 3s linear infinite;
 }
 
@@ -215,11 +240,16 @@
 /* Sparkle icon (3+ posts) */
 .sparkle-icon {
   position: absolute;
-  top: -4px;
-  right: -4px;
-  font-size: 8px;
+  top: 2px;
+  right: 2px;
+  font-size: 10px;
   animation: sparkle 1.5s ease-in-out infinite;
   pointer-events: none;
+  color: #a855f7;
+}
+
+:global(.dark) .sparkle-icon {
+  color: #c084fc;
 }
 
 @keyframes sparkle {
@@ -228,7 +258,7 @@
     transform: rotate(0deg) scale(1);
   }
   50% {
-    opacity: 0.5;
+    opacity: 0.6;
     transform: rotate(180deg) scale(1.2);
   }
 }
@@ -236,7 +266,7 @@
 /* Combined effects for 4+ posts */
 .day-cell.rainbow-border.pulse-effect.glow-effect {
   animation: pulse 2s ease-in-out infinite, rainbow 3s linear infinite;
-  box-shadow: 0 0 12px rgba(168, 85, 247, 1);
+  box-shadow: 0 0 16px rgba(168, 85, 247, 1);
 }
 
 /* ========================================
@@ -584,106 +614,87 @@
 /* Tablet */
 @media (max-width: 1024px) {
   .activity-grid-container {
-    gap: 3rem;
-  }
-
-  .cells-grid {
-    grid-template-columns: repeat(53, 12px);
-  }
-
-  .week-column {
-    gap: 2.5px;
+    max-width: 700px;
   }
 
   .day-cell {
-    width: 12px;
-    height: 12px;
-  }
-
-  .month-labels {
-    grid-template-columns: repeat(53, 12px);
-    gap: 2.5px;
+    min-height: 42px;
+    font-size: 0.8125rem;
   }
 }
 
 /* Mobile */
 @media (max-width: 768px) {
   .activity-grid-container {
-    gap: 2.5rem;
-    padding: 0.5rem 0;
+    gap: 2rem;
+  }
+
+  .year-header {
+    margin-bottom: 1.5rem;
   }
 
   .year-label {
+    font-size: 1.25rem;
+  }
+
+  .months-container {
+    gap: 2rem;
+  }
+
+  .month-name {
     font-size: 1rem;
   }
 
-  .grid-wrapper {
-    gap: 0.375rem;
+  .week-row {
+    gap: 6px;
   }
 
-  .day-labels {
-    font-size: 0.625rem;
-    min-width: 1.5rem;
-  }
-
-  .day-label {
-    height: 10px;
-  }
-
-  .cells-grid {
-    grid-template-columns: repeat(53, 10px);
-    gap: 2px;
-  }
-
-  .week-column {
-    gap: 2px;
+  .weekday-labels {
+    gap: 6px;
   }
 
   .day-cell {
-    width: 10px;
-    height: 10px;
-  }
-
-  .month-labels {
-    grid-template-columns: repeat(53, 10px);
-    gap: 2px;
-    font-size: 0.625rem;
+    min-height: 36px;
+    font-size: 0.75rem;
+    border-radius: 4px;
   }
 
   .sparkle-icon {
-    font-size: 6px;
-    top: -3px;
-    right: -3px;
+    font-size: 8px;
   }
 }
 
 /* Extra small mobile */
 @media (max-width: 480px) {
-  .cells-grid {
-    grid-template-columns: repeat(53, 8px);
-    gap: 1.5px;
+  .activity-grid-container {
+    gap: 1.5rem;
   }
 
-  .week-column {
-    gap: 1.5px;
+  .months-container {
+    gap: 1.5rem;
+  }
+
+  .week-row {
+    gap: 4px;
+  }
+
+  .weekday-labels {
+    gap: 4px;
   }
 
   .day-cell {
-    width: 8px;
-    height: 8px;
+    min-height: 32px;
+    font-size: 0.7rem;
+    border-radius: 3px;
   }
 
-  .month-labels {
-    grid-template-columns: repeat(53, 8px);
-    gap: 1.5px;
-    font-size: 0.5rem;
-  }
-
-  .day-label {
-    height: 8px;
+  .weekday-label {
+    font-size: 0.65rem;
   }
 
   .sparkle-icon {
-    display: none; /* Too small to see on tiny screens */
+    font-size: 6px;
+    top: 1px;
+    right: 1px;
   }
 }

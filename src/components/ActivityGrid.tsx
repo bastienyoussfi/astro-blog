@@ -59,7 +59,7 @@ const ActivityGrid: React.FC<ActivityGridProps> = ({ activityData }) => {
   };
 
   // Day names for labels
-  const dayNames = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+  const dayNames = ["S", "M", "T", "W", "T", "F", "S"];
 
   return (
     <div className="activity-grid-container" onMouseMove={handleMouseMove}>
@@ -67,64 +67,67 @@ const ActivityGrid: React.FC<ActivityGridProps> = ({ activityData }) => {
         <div key={yearData.year} className="year-section">
           {/* Year header */}
           <div className="year-header">
-            <span className="year-label">{yearData.year}</span>
+            <h2 className="year-label">{yearData.year}</h2>
           </div>
 
-          <div className="grid-wrapper">
-            {/* Day labels */}
-            <div className="day-labels">
-              {dayNames.map((day, index) => (
-                <div key={day} className="day-label" style={{ display: index % 2 === 1 ? 'block' : 'none' }}>
-                  {day}
+          {/* Months stacked vertically */}
+          <div className="months-container">
+            {yearData.months.map((monthData) => (
+              <div key={`${monthData.year}-${monthData.month}`} className="month-grid">
+                {/* Month label */}
+                <div className="month-header">
+                  <span className="month-name">{monthData.monthName}</span>
                 </div>
-              ))}
-            </div>
 
-            {/* Main grid */}
-            <div className="weeks-grid">
-              {/* Month labels */}
-              <div className="month-labels">
-                {yearData.monthLabels.map((label, index) => (
-                  <span
-                    key={`${label.month}-${index}`}
-                    className="month-label"
-                    style={{
-                      gridColumn: label.weekIndex + 1,
-                    }}
-                  >
-                    {label.month}
-                  </span>
-                ))}
-              </div>
-
-              {/* Grid cells */}
-              <div className="cells-grid">
-                {yearData.weeks.map((week, weekIndex) => (
-                  <div key={weekIndex} className="week-column">
-                    {week.days.map((day, dayIndex) => {
-                      const hasActivity = day && day.count > 0;
-                      const easterEggClass = day ? getEasterEggClass(day.count) : "";
-
-                      return (
-                        <div
-                          key={`${weekIndex}-${dayIndex}`}
-                          className={`day-cell ${hasActivity ? "active" : "empty"} ${easterEggClass}`}
-                          onMouseEnter={() => handleDayHover(day)}
-                          onMouseLeave={() => handleDayHover(null)}
-                          onClick={() => handleDayClick(day)}
-                          data-count={day?.count || 0}
-                        >
-                          {/* Sparkle icon for 3+ posts */}
-                          {day && day.count >= 3 && (
-                            <span className="sparkle-icon">✦</span>
-                          )}
-                        </div>
-                      );
-                    })}
+                {/* Calendar grid for the month */}
+                <div className="month-calendar">
+                  {/* Day of week labels */}
+                  <div className="weekday-labels">
+                    {dayNames.map((day, index) => (
+                      <div key={index} className="weekday-label">
+                        {day}
+                      </div>
+                    ))}
                   </div>
-                ))}
+
+                  {/* Weeks */}
+                  <div className="weeks-container">
+                    {monthData.weeks.map((week, weekIndex) => (
+                      <div key={weekIndex} className="week-row">
+                        {week.map((day, dayIndex) => {
+                          if (!day) {
+                            return <div key={dayIndex} className="day-cell empty-placeholder" />;
+                          }
+
+                          const hasActivity = day.count > 0;
+                          const easterEggClass = getEasterEggClass(day.count);
+
+                          return (
+                            <div
+                              key={dayIndex}
+                              className={`day-cell ${hasActivity ? "active" : "empty"} ${easterEggClass}`}
+                              onMouseEnter={() => handleDayHover(day)}
+                              onMouseLeave={() => handleDayHover(null)}
+                              onClick={() => handleDayClick(day)}
+                              data-count={day.count}
+                              title={`${monthData.monthName} ${day.dayOfMonth}`}
+                            >
+                              {/* Show day number */}
+                              <span className="day-number">{day.dayOfMonth}</span>
+
+                              {/* Sparkle icon for 3+ posts */}
+                              {day.count >= 3 && (
+                                <span className="sparkle-icon">✦</span>
+                              )}
+                            </div>
+                          );
+                        })}
+                      </div>
+                    ))}
+                  </div>
+                </div>
               </div>
-            </div>
+            ))}
           </div>
         </div>
       ))}

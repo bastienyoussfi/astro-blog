@@ -13,25 +13,19 @@ export interface DayActivity {
   date: Date;
   posts: PostMetadata[];
   count: number;
+  dayOfMonth: number;
 }
 
-export interface WeekData {
-  days: (DayActivity | null)[];
+export interface MonthData {
+  month: number; // 0-11
+  monthName: string;
+  year: number;
+  weeks: (DayActivity | null)[][]; // Array of weeks, each week is 7 days
 }
 
 export interface YearData {
   year: number;
-  weeks: WeekData[];
-  monthLabels: { month: string; weekIndex: number }[];
-}
-
-/**
- * Get the week number of a date (0-52)
- */
-function getWeekNumber(date: Date): number {
-  const firstDay = new Date(date.getFullYear(), 0, 1);
-  const days = Math.floor((date.getTime() - firstDay.getTime()) / (24 * 60 * 60 * 1000));
-  return Math.floor(days / 7);
+  months: MonthData[];
 }
 
 /**
@@ -42,23 +36,41 @@ function getDayOfWeek(date: Date): number {
 }
 
 /**
- * Generate activity grid for a specific year
+ * Get the number of days in a month
  */
-export function generateYearGrid(
+function getDaysInMonth(year: number, month: number): number {
+  return new Date(year, month + 1, 0).getDate();
+}
+
+/**
+ * Generate activity grid for a specific month
+ */
+export function generateMonthGrid(
   year: number,
+  month: number,
   posts: CollectionEntry<"posts">[]
-): YearData {
-  // Initialize 53 weeks × 7 days grid
-  const weeks: WeekData[] = Array.from({ length: 53 }, () => ({
-    days: Array(7).fill(null),
-  }));
+): MonthData {
+  const monthNames = [
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December",
+  ];
 
   // Group posts by date
   const postsByDate = new Map<string, PostMetadata[]>();
 
   posts.forEach((post) => {
     const postDate = new Date(post.data.date);
-    if (postDate.getFullYear() !== year) return;
+    if (postDate.getFullYear() !== year || postDate.getMonth() !== month) return;
 
     const dateKey = postDate.toISOString().split("T")[0];
 
@@ -76,54 +88,74 @@ export function generateYearGrid(
     });
   });
 
-  // Fill the grid with activity data
-  for (let month = 0; month < 12; month++) {
-    for (let day = 1; day <= 31; day++) {
-      const date = new Date(year, month, day);
-      if (date.getFullYear() !== year || date.getMonth() !== month) continue;
+  // Create calendar grid
+  const weeks: (DayActivity | null)[][] = [];
+  const daysInMonth = getDaysInMonth(year, month);
+  const firstDay = new Date(year, month, 1);
+  const firstDayOfWeek = getDayOfWeek(firstDay);
 
-      const weekIndex = getWeekNumber(date);
-      const dayIndex = getDayOfWeek(date);
-      const dateKey = date.toISOString().split("T")[0];
+  let currentWeek: (DayActivity | null)[] = [];
 
-      const postsForDay = postsByDate.get(dateKey) || [];
+  // Fill empty days before month starts
+  for (let i = 0; i < firstDayOfWeek; i++) {
+    currentWeek.push(null);
+  }
 
-      weeks[weekIndex].days[dayIndex] = {
-        date,
-        posts: postsForDay,
-        count: postsForDay.length,
-      };
+  // Fill days of the month
+  for (let day = 1; day <= daysInMonth; day++) {
+    const date = new Date(year, month, day);
+    const dateKey = date.toISOString().split("T")[0];
+    const postsForDay = postsByDate.get(dateKey) || [];
+
+    currentWeek.push({
+      date,
+      posts: postsForDay,
+      count: postsForDay.length,
+      dayOfMonth: day,
+    });
+
+    // If week is complete, start a new one
+    if (currentWeek.length === 7) {
+      weeks.push(currentWeek);
+      currentWeek = [];
     }
   }
 
-  // Generate month labels
-  const monthLabels: { month: string; weekIndex: number }[] = [];
-  const monthNames = [
-    "Jan",
-    "Feb",
-    "Mar",
-    "Apr",
-    "May",
-    "Jun",
-    "Jul",
-    "Aug",
-    "Sep",
-    "Oct",
-    "Nov",
-    "Dec",
-  ];
-
-  for (let month = 0; month < 12; month++) {
-    const firstDayOfMonth = new Date(year, month, 1);
-    const weekIndex = getWeekNumber(firstDayOfMonth);
-    monthLabels.push({ month: monthNames[month], weekIndex });
+  // Fill remaining days to complete the last week
+  if (currentWeek.length > 0) {
+    while (currentWeek.length < 7) {
+      currentWeek.push(null);
+    }
+    weeks.push(currentWeek);
   }
 
-  return { year, weeks, monthLabels };
+  return {
+    month,
+    monthName: monthNames[month],
+    year,
+    weeks,
+  };
 }
 
 /**
- * Get all years that have posts
+ * Generate activity grid for a specific year (all months)
+ */
+export function generateYearGrid(
+  year: number,
+  posts: CollectionEntry<"posts">[]
+): YearData {
+  const months: MonthData[] = [];
+
+  // Generate all 12 months in reverse order (latest first)
+  for (let month = 11; month >= 0; month--) {
+    months.push(generateMonthGrid(year, month, posts));
+  }
+
+  return { year, months };
+}
+
+/**
+ * Get all years and months that have posts
  */
 export function getYearsWithPosts(posts: CollectionEntry<"posts">[]): number[] {
   const years = new Set<number>();
