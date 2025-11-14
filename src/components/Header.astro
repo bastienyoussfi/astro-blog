@@ -15,27 +15,35 @@ const currentPath = Astro.url.pathname;
             <nav class="hidden md:block">
                 <ul class="flex gap-6 text-sm">
                     <li>
-                        <a 
-                            href="/" 
+                        <a
+                            href="/"
                             class={`transition-colors ${currentPath === '/' ? 'text-white' : 'text-gray-400 hover:text-white'}`}
                         >
                             Blog
                         </a>
                     </li>
                     <li>
-                        <a 
-                            href="/learn" 
+                        <a
+                            href="/learn"
                             class={`transition-colors ${currentPath.startsWith('/learn') ? 'text-white' : 'text-gray-400 hover:text-white'}`}
                         >
                             Learn
                         </a>
                     </li>
                     <li>
-                        <a 
-                            href="/projects" 
+                        <a
+                            href="/projects"
                             class={`transition-colors ${currentPath.startsWith('/projects') ? 'text-white' : 'text-gray-400 hover:text-white'}`}
                         >
                             Projects
+                        </a>
+                    </li>
+                    <li>
+                        <a
+                            href="/activity"
+                            class={`transition-colors ${currentPath.startsWith('/activity') ? 'text-white' : 'text-gray-400 hover:text-white'}`}
+                        >
+                            Activity
                         </a>
                     </li>
                 </ul>
@@ -84,27 +92,35 @@ const currentPath = Astro.url.pathname;
     <nav id="mobile-menu" class="hidden md:hidden mt-6 pt-6 border-t border-gray-800">
         <ul class="space-y-4">
             <li>
-                <a 
-                    href="/" 
+                <a
+                    href="/"
                     class={`block text-lg transition-colors ${currentPath === '/' ? 'text-white' : 'text-gray-400 hover:text-white'}`}
                 >
                     Blog
                 </a>
             </li>
             <li>
-                <a 
-                    href="/learn" 
+                <a
+                    href="/learn"
                     class={`block text-lg transition-colors ${currentPath.startsWith('/learn') ? 'text-white' : 'text-gray-400 hover:text-white'}`}
                 >
                     Learn
                 </a>
             </li>
             <li>
-                <a 
-                    href="/projects" 
+                <a
+                    href="/projects"
                     class={`block text-lg transition-colors ${currentPath.startsWith('/projects') ? 'text-white' : 'text-gray-400 hover:text-white'}`}
                 >
                     Projects
+                </a>
+            </li>
+            <li>
+                <a
+                    href="/activity"
+                    class={`block text-lg transition-colors ${currentPath.startsWith('/activity') ? 'text-white' : 'text-gray-400 hover:text-white'}`}
+                >
+                    Activity
                 </a>
             </li>
             <li class="pt-4 border-t border-gray-800">

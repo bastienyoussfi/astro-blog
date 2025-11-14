@@ -1,0 +1,83 @@
+---
+import Layout from "../layouts/Layout.astro";
+import { getCollection } from "astro:content";
+import { generateActivityData } from "../utils/activityUtils";
+import ActivityGrid from "../components/ActivityGrid";
+import "../styles/activity.css";
+
+// Fetch all posts
+const allPosts = await getCollection("posts");
+
+// Filter out drafts
+const publishedPosts = allPosts.filter((post) => !post.data.draft);
+
+// Generate activity data
+const activityData = generateActivityData(publishedPosts);
+
+const title = "Activity";
+const description = "A visual representation of my writing activity throughout the years.";
+---
+
+<Layout title={title} description={description}>
+  <div class="activity-page">
+    <header class="activity-header">
+      <h1 class="activity-title">Activity</h1>
+      <p class="activity-description">
+        A visual representation of my writing activity. Each cell represents a day.
+      </p>
+    </header>
+
+    <ActivityGrid client:load activityData={activityData} />
+  </div>
+</Layout>
+
+<style>
+  .activity-page {
+    padding: 2rem 0;
+    max-width: 100%;
+  }
+
+  .activity-header {
+    margin-bottom: 3rem;
+    text-align: left;
+  }
+
+  .activity-title {
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+    color: var(--color-text-light);
+  }
+
+  .activity-description {
+    font-size: 1rem;
+    color: #6b7280;
+    margin: 0;
+  }
+
+  :global(.dark) .activity-title {
+    color: var(--color-text-dark);
+  }
+
+  :global(.dark) .activity-description {
+    color: #9ca3af;
+  }
+
+  @media (max-width: 768px) {
+    .activity-page {
+      padding: 1rem 0;
+    }
+
+    .activity-header {
+      margin-bottom: 2rem;
+    }
+
+    .activity-title {
+      font-size: 2rem;
+    }
+
+    .activity-description {
+      font-size: 0.875rem;
+    }
+  }
+</style>
