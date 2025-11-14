@@ -38,7 +38,9 @@
 
   /* Code block theme - refined to exactly match reference */
   --code-block-bg: #131620; /* Exact dark background matching reference */
+  --code-block-bg-light: #f6f8fa; /* Light mode background */
   --code-block-text: #e6edf3; /* GitHub Dark theme text */
+  --code-block-text-light: #24292f; /* Light mode text */
   --code-block-border-radius: 12px;
   --code-block-padding: 0.75rem; /* Refined padding */
   --code-block-line-height: 1.6;
@@ -47,6 +49,7 @@
     ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono",
     "Courier New", monospace;
   --line-number-color: #4b5364; /* Exact line number color */
+  --line-number-color-light: #57606a; /* Light mode line numbers */
   --line-number-padding: 0 0.25rem 0 0; /* Space between line number and code */
 
   /* Font family */
@@ -218,6 +221,22 @@
       }
     }
 
+    /* Light mode pre/code styling */
+    :not(.dark) & {
+      pre {
+        background-color: var(--code-block-bg-light) !important;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
+
+        &::before {
+          color: #57606a;
+        }
+
+        code {
+          color: var(--code-block-text-light);
+        }
+      }
+    }
+
     blockquote {
       border-left-width: var(--typography-blockquote-border-left);
       border-left-color: var(--typography-blockquote-border-color);
@@ -293,6 +312,11 @@
   background-color: var(--code-block-bg) !important;
 }
 
+/* Light mode code blocks */
+:not(.dark) .astro-code {
+  background-color: var(--code-block-bg-light) !important;
+}
+
 /* Code block container */
 .code-block {
   padding: 0 !important;
@@ -300,6 +324,12 @@
   border-radius: var(--code-block-border-radius) !important;
   background-color: var(--code-block-bg) !important;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1) !important;
+}
+
+/* Light mode code block container */
+:not(.dark) .code-block {
+  background-color: var(--code-block-bg-light) !important;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08) !important;
 }
 
 /* Content wrapper with proper padding */
@@ -327,6 +357,11 @@
   font-size: 0.875em;
   font-family: var(--code-block-font-family) !important;
   line-height: var(--code-block-line-height) !important;
+}
+
+/* Light mode line numbers */
+:not(.dark) .line-number {
+  color: var(--line-number-color-light) !important;
 }
 
 /* Code tokens syntax highlighting with exact colors */
@@ -385,6 +420,56 @@
 .astro-code span:not(.line-number) {
   font-family: var(--code-block-font-family) !important;
   line-height: var(--code-block-line-height) !important;
+}
+
+/* Light mode syntax highlighting */
+:not(.dark) .astro-code .keyword,
+:not(.dark) .astro-code .token.keyword {
+  color: #cf222e !important; /* Darker red for keywords */
+}
+
+:not(.dark) .astro-code .function,
+:not(.dark) .astro-code .token.function {
+  color: #8250df !important; /* Darker purple for functions */
+}
+
+:not(.dark) .astro-code .string,
+:not(.dark) .astro-code .token.string {
+  color: #0a3069 !important; /* Dark blue for strings */
+}
+
+:not(.dark) .astro-code .variable,
+:not(.dark) .astro-code .token.variable {
+  color: #0550ae !important; /* Medium blue for variables */
+}
+
+:not(.dark) .astro-code .comment,
+:not(.dark) .astro-code .token.comment {
+  color: #57606a !important; /* Gray for comments */
+  font-style: italic;
+}
+
+:not(.dark) .astro-code .number,
+:not(.dark) .astro-code .token.number {
+  color: #0550ae !important; /* Blue for numbers */
+}
+
+:not(.dark) .astro-code .operator,
+:not(.dark) .astro-code .token.operator {
+  color: #cf222e !important; /* Red for operators */
+}
+
+:not(.dark) .astro-code .punctuation,
+:not(.dark) .astro-code .token.punctuation {
+  color: #24292f !important; /* Dark gray for punctuation */
+}
+
+:not(.dark) .astro-code .parameter {
+  color: #0550ae !important;
+}
+
+:not(.dark) .astro-code .property {
+  color: #0550ae !important;
 }
 
 /* Heading anchor links styles */

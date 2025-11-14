@@ -1,5 +1,6 @@
 ---
 import { Icon } from 'astro-icon/components';
+import ThemeToggle from './ThemeToggle';
 
 const currentPath = Astro.url.pathname;
 ---
@@ -43,6 +44,9 @@ const currentPath = Astro.url.pathname;
         </div>
         
         <div class="flex items-center gap-4">
+            {/* Theme Toggle */}
+            <ThemeToggle client:load />
+
             {/* Social Icons - Hidden on mobile to save space */}
             <nav class="hidden sm:block">
                 <ul class="flex gap-1 space-x-4 opacity-70">
@@ -68,9 +72,9 @@ const currentPath = Astro.url.pathname;
                     </li>
                 </ul>
             </nav>
-            
+
             {/* Mobile Menu Button */}
-            <button 
+            <button
                 id="mobile-menu-button"
                 class="md:hidden text-gray-400 hover:text-white transition-colors"
                 aria-label="Toggle menu"
