@@ -1,0 +1,87 @@
+---
+import { Icon } from 'astro-icon/components';
+---
+
+<button
+  id="theme-toggle"
+  type="button"
+  aria-label="Toggle theme"
+  class="theme-toggle text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors duration-200"
+>
+  <Icon name="lucide:sun" class="w-5 h-5 sun-icon" />
+  <Icon name="lucide:moon" class="w-5 h-5 moon-icon" />
+</button>
+
+<script>
+  import { toggleTheme, getTheme, watchSystemTheme } from '../scripts/theme';
+
+  function updateToggleIcon() {
+    const theme = getTheme();
+    const button = document.getElementById('theme-toggle');
+    const sunIcon = button?.querySelector('.sun-icon');
+    const moonIcon = button?.querySelector('.moon-icon');
+
+    if (theme === 'dark') {
+      sunIcon?.classList.remove('hidden');
+      moonIcon?.classList.add('hidden');
+    } else {
+      sunIcon?.classList.add('hidden');
+      moonIcon?.classList.remove('hidden');
+    }
+  }
+
+  // Initialize icon state
+  document.addEventListener('DOMContentLoaded', () => {
+    updateToggleIcon();
+
+    // Handle toggle click
+    const button = document.getElementById('theme-toggle');
+    button?.addEventListener('click', () => {
+      toggleTheme();
+      updateToggleIcon();
+    });
+
+    // Watch for system theme changes
+    watchSystemTheme();
+
+    // Listen for theme changes from system preference
+    window.addEventListener('themechange', () => {
+      updateToggleIcon();
+    });
+  });
+</script>
+
+<style>
+  .theme-toggle {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    background: none;
+    border: none;
+    padding: 0;
+  }
+
+  .theme-toggle svg {
+    transition: opacity 0.2s ease-in-out, transform 0.2s ease-in-out;
+  }
+
+  .sun-icon,
+  .moon-icon {
+    position: absolute;
+  }
+
+  .sun-icon {
+    opacity: 1;
+  }
+
+  .moon-icon {
+    opacity: 1;
+  }
+
+  .hidden {
+    opacity: 0;
+    transform: rotate(180deg);
+  }
+</style>
