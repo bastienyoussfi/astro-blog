@@ -30,76 +30,76 @@ const recentPosts = learnPosts.slice(0, 5);
   <main class="blog-container py-8 md:py-12">
     <!-- Hero Section -->
     <div class="max-w-[65ch] mx-auto mb-16">
-      <h1 class="text-5xl md:text-6xl font-bold mb-4 flex items-center gap-3">
+      <h1 class="text-5xl md:text-6xl font-bold mb-4 flex items-center gap-3 text-gray-900 dark:text-white">
         Learn in Public
       </h1>
-      <p class="text-xl text-gray-400 mb-8">
+      <p class="text-xl text-gray-600 dark:text-gray-400 mb-8">
         Documenting my journey from curious to competent. Learning DevOps, Machine Learning, and beyond.
       </p>
-      
+
       <!-- Stats -->
       <div class="flex flex-wrap gap-6 text-sm">
         <div class="flex items-center gap-2">
-          <span class="text-gray-500">{totalJourneys}</span>
-          <span class="text-gray-400">Active Journeys</span>
+          <span class="text-gray-700 dark:text-gray-500">{totalJourneys}</span>
+          <span class="text-gray-500 dark:text-gray-400">Active Journeys</span>
         </div>
         <div class="flex items-center gap-2">
-          <span class="text-gray-500">{totalPosts}</span>
-          <span class="text-gray-400">Articles</span>
+          <span class="text-gray-700 dark:text-gray-500">{totalPosts}</span>
+          <span class="text-gray-500 dark:text-gray-400">Articles</span>
         </div>
         <div class="flex items-center gap-2">
-          <span class="text-gray-500">{totalProjects}</span>
-          <span class="text-gray-400">Projects</span>
+          <span class="text-gray-700 dark:text-gray-500">{totalProjects}</span>
+          <span class="text-gray-500 dark:text-gray-400">Projects</span>
         </div>
         <div class="flex items-center gap-2">
-          <span class="text-gray-500">{daysLearning}</span>
-          <span class="text-gray-400">Days Learning</span>
+          <span class="text-gray-700 dark:text-gray-500">{daysLearning}</span>
+          <span class="text-gray-500 dark:text-gray-400">Days Learning</span>
         </div>
       </div>
     </div>
 
     <!-- Active Journeys -->
     <div class="max-w-[65ch] mx-auto mb-16">
-      <h2 class="text-3xl font-bold mb-8">Active Journeys</h2>
+      <h2 class="text-3xl font-bold mb-8 text-gray-900 dark:text-white">Active Journeys</h2>
       <div class="grid md:grid-cols-2 gap-6">
         {activeJourneys.map(journey => {
           const journeyPosts = learnPosts.filter(p => p.data.journey === journey.slug);
           const journeyProjects = projects.filter(p => p.data.journey === journey.slug);
-          const progress = journey.data.totalTopics 
+          const progress = journey.data.totalTopics
             ? Math.round((journey.data.completedTopics / journey.data.totalTopics) * 100)
             : 0;
-          
+
           return (
-            <a 
+            <a
               href={`/learn/${journey.slug}`}
-              class="block p-6 border border-gray-800 rounded-lg hover:border-gray-700 transition-all group"
+              class="block p-6 border border-gray-300 dark:border-gray-800 rounded-lg hover:border-gray-400 dark:hover:border-gray-700 transition-all group"
             >
               <div class="flex items-center gap-3 mb-3">
-                <h3 class="text-xl font-semibold group-hover:text-gray-300 transition-colors">
+                <h3 class="text-xl font-semibold text-gray-900 dark:text-white group-hover:text-gray-600 dark:group-hover:text-gray-300 transition-colors">
                   {journey.data.title}
                 </h3>
               </div>
-              
-              <p class="text-gray-400 text-sm mb-4">{journey.data.description}</p>
-              
+
+              <p class="text-gray-600 dark:text-gray-400 text-sm mb-4">{journey.data.description}</p>
+
               {/* Progress Bar */}
               {journey.data.totalTopics && (
                 <div class="mb-4">
-                  <div class="flex justify-between text-xs text-gray-500 mb-1">
+                  <div class="flex justify-between text-xs text-gray-600 dark:text-gray-500 mb-1">
                     <span>Progress</span>
                     <span>{progress}%</span>
                   </div>
-                  <div class="w-full bg-gray-800 rounded-full h-2">
-                    <div 
-                      class="h-2 rounded-full transition-all" 
+                  <div class="w-full bg-gray-200 dark:bg-gray-800 rounded-full h-2">
+                    <div
+                      class="h-2 rounded-full transition-all"
                       style={`width: ${progress}%; background-color: ${journey.data.color}`}
                     />
                   </div>
                 </div>
               )}
-              
+
               {/* Stats */}
-              <div class="flex gap-4 text-sm text-gray-500">
+              <div class="flex gap-4 text-sm text-gray-600 dark:text-gray-500">
                 <span>{journeyPosts.length} articles</span>
                 <span>{journeyProjects.length} projects</span>
               </div>
@@ -112,11 +112,11 @@ const recentPosts = learnPosts.slice(0, 5);
     {/* Recent Learning */}
     {recentPosts.length > 0 && (
       <div class="max-w-[65ch] mx-auto mb-16">
-        <h2 class="text-3xl font-bold mb-8">Recent Learning</h2>
+        <h2 class="text-3xl font-bold mb-8 text-gray-900 dark:text-white">Recent Learning</h2>
         <ul class="space-y-6">
           {recentPosts.map(post => (
             <li>
-              <a 
+              <a
                 href={`/learn/${post.data.journey}/${post.slug}`}
                 class="block hover:opacity-100 opacity-70 transition-opacity"
               >
@@ -125,10 +125,10 @@ const recentPosts = learnPosts.slice(0, 5);
                     <span class="text-xs px-2 py-1 rounded" style={`background-color: ${journeys.find(j => j.slug === post.data.journey)?.data.color}20; color: ${journeys.find(j => j.slug === post.data.journey)?.data.color}`}>
                       {post.data.journey}
                     </span>
-                    <span class="text-xs text-gray-500">{post.data.difficulty}</span>
+                    <span class="text-xs text-gray-600 dark:text-gray-500">{post.data.difficulty}</span>
                   </div>
-                  <h3 class="text-xl font-medium">{post.data.title}</h3>
-                  <div class="text-sm text-gray-500 mt-1">
+                  <h3 class="text-xl font-medium text-gray-900 dark:text-white">{post.data.title}</h3>
+                  <div class="text-sm text-gray-600 dark:text-gray-500 mt-1">
                     {post.data.date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
                     <span> · {post.data.timeEstimate}</span>
                   </div>
@@ -142,12 +142,12 @@ const recentPosts = learnPosts.slice(0, 5);
 
     {/* Call to Action */}
     <div class="max-w-[65ch] mx-auto text-center">
-      <p class="text-gray-400 mb-4">
+      <p class="text-gray-600 dark:text-gray-400 mb-4">
         Want to see all my projects?
       </p>
-      <a 
-        href="/projects" 
-        class="inline-block px-6 py-3 bg-gray-800 hover:bg-gray-700 rounded-lg transition-colors"
+      <a
+        href="/projects"
+        class="inline-block px-6 py-3 bg-gray-200 dark:bg-gray-800 hover:bg-gray-300 dark:hover:bg-gray-700 text-gray-900 dark:text-white rounded-lg transition-colors"
       >
         View All Projects →
       </a>

@@ -29,10 +29,10 @@ const projectsByJourney = projects.reduce(
     <main class="blog-container py-8 md:py-12">
         <!-- Header -->
         <div class="max-w-[65ch] mx-auto mb-16">
-            <h1 class="text-5xl md:text-6xl font-bold mb-4 flex items-center gap-3">
+            <h1 class="text-5xl md:text-6xl font-bold mb-4 flex items-center gap-3 text-gray-900 dark:text-white">
                 Projects
             </h1>
-            <p class="text-xl text-gray-400">
+            <p class="text-xl text-gray-600 dark:text-gray-400">
                 Practical implementations and experiments from my learning
                 journeys.
             </p>
@@ -52,10 +52,10 @@ const projectsByJourney = projects.reduce(
                                 <div class="mb-16">
                                     {journey && (
                                         <div class="flex items-center gap-3 mb-6">
-                                            <h2 class="text-2xl font-bold">
+                                            <h2 class="text-2xl font-bold text-gray-900 dark:text-white">
                                                 {journey.data.title}
                                             </h2>
-                                            <span class="text-sm text-gray-500">
+                                            <span class="text-sm text-gray-600 dark:text-gray-500">
                                                 ({journeyProjects.length})
                                             </span>
                                         </div>
@@ -65,10 +65,10 @@ const projectsByJourney = projects.reduce(
                                         {journeyProjects.map((project) => (
                                             <a
                                                 href={`/projects/${project.slug}`}
-                                                class="block p-6 border border-gray-800 rounded-lg hover:border-gray-700 transition-all group"
+                                                class="block p-6 border border-gray-300 dark:border-gray-800 rounded-lg hover:border-gray-400 dark:hover:border-gray-700 transition-all group"
                                             >
                                                 <div class="flex items-start justify-between mb-3">
-                                                    <h3 class="text-xl font-semibold group-hover:text-gray-300 transition-colors flex-1">
+                                                    <h3 class="text-xl font-semibold text-gray-900 dark:text-white group-hover:text-gray-600 dark:group-hover:text-gray-300 transition-colors flex-1">
                                                         {project.data.title}
                                                     </h3>
                                                     <span
@@ -76,12 +76,12 @@ const projectsByJourney = projects.reduce(
                                                             project.data
                                                                 .status ===
                                                             "completed"
-                                                                ? "bg-green-900/30 text-green-400"
+                                                                ? "bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400"
                                                                 : project.data
                                                                         .status ===
                                                                     "in-progress"
-                                                                  ? "bg-yellow-900/30 text-yellow-400"
-                                                                  : "bg-gray-800 text-gray-400"
+                                                                  ? "bg-yellow-100 dark:bg-yellow-900/30 text-yellow-700 dark:text-yellow-400"
+                                                                  : "bg-gray-200 dark:bg-gray-800 text-gray-700 dark:text-gray-400"
                                                         }`}
                                                     >
                                                         {project.data.status.replace(
@@ -91,7 +91,7 @@ const projectsByJourney = projects.reduce(
                                                     </span>
                                                 </div>
 
-                                                <p class="text-gray-400 text-sm mb-4">
+                                                <p class="text-gray-600 dark:text-gray-400 text-sm mb-4">
                                                     {project.data.description}
                                                 </p>
 
@@ -100,13 +100,13 @@ const projectsByJourney = projects.reduce(
                                                     {project.data.techStack
                                                         .slice(0, 4)
                                                         .map((tech) => (
-                                                            <span class="text-xs px-2 py-1 bg-gray-800/50 rounded">
+                                                            <span class="text-xs px-2 py-1 bg-gray-100 dark:bg-gray-800/50 text-gray-700 dark:text-gray-300 rounded">
                                                                 {tech}
                                                             </span>
                                                         ))}
                                                     {project.data.techStack
                                                         .length > 4 && (
-                                                        <span class="text-xs px-2 py-1 text-gray-500">
+                                                        <span class="text-xs px-2 py-1 text-gray-600 dark:text-gray-500">
                                                             +
                                                             {project.data
                                                                 .techStack
@@ -118,7 +118,7 @@ const projectsByJourney = projects.reduce(
                                                 </div>
 
                                                 {/* Links */}
-                                                <div class="flex gap-3 text-xs text-gray-500">
+                                                <div class="flex gap-3 text-xs text-gray-600 dark:text-gray-500">
                                                     {project.data.githubUrl && (
                                                         <span class="flex items-center gap-1">
                                                             <svg
@@ -168,12 +168,12 @@ const projectsByJourney = projects.reduce(
                 </div>
             ) : (
                 <div class="max-w-[65ch] mx-auto text-center py-16">
-                    <p class="text-gray-500 mb-6">
+                    <p class="text-gray-600 dark:text-gray-500 mb-6">
                         No projects yet. Check back soon!
                     </p>
                     <a
                         href="/learn"
-                        class="inline-block px-6 py-3 bg-gray-800 hover:bg-gray-700 rounded-lg transition-colors"
+                        class="inline-block px-6 py-3 bg-gray-200 dark:bg-gray-800 hover:bg-gray-300 dark:hover:bg-gray-700 text-gray-900 dark:text-white rounded-lg transition-colors"
                     >
                         View Learning Journey
                     </a>
