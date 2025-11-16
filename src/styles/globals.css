@@ -129,7 +129,6 @@
     font-family: var(--font-family-sans);
     background-color: var(--color-background-light);
     color: var(--color-text-light);
-    @apply dark:bg-[var(--color-background-dark)] dark:text-[var(--color-text-dark)];
     @apply min-h-screen flex flex-col h-full;
 
     /* Smooth transition for theme switching */
@@ -139,6 +138,12 @@
     ::selection {
       background-color: var(--color-selection);
     }
+  }
+
+  /* Dark mode styles for body */
+  .dark body {
+    background-color: var(--color-background-dark);
+    color: var(--color-text-dark);
   }
 
   /* Main content area should take up all available space */
