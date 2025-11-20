@@ -40,11 +40,6 @@ const currentUrl = Astro.url.href;
 
 // Set canonical URL based on content type
 let canonicalUrl = currentUrl;
-if (post.data.type === 'learn' && post.data.journey) {
-  canonicalUrl = new URL(`/learn/${post.data.journey}/${post.slug}`, Astro.site || Astro.url.origin).href;
-} else if (post.data.type === 'project') {
-  canonicalUrl = new URL(`/projects/${post.slug}`, Astro.site || Astro.url.origin).href;
-}
 
 const encodedTitle = encodeURIComponent(post.data.title);
 const encodedUrl = encodeURIComponent(currentUrl);
@@ -52,20 +47,20 @@ const encodedUrl = encodeURIComponent(currentUrl);
 // Extract the first image from post content or use default
 const defaultImage = '/images/default-og.jpg';
 // Author information
-const authorName = "Blog Author";
-const authorUrl = "https://example.com/about";
+const authorName = "Bastien Youssfi";
+const authorUrl = "https://bastienyoussfi.com";
 ---
 
 <Layout
   title={post.data.title}
-  description={post.data.description || `${post.data.title} - Read more on My Astro Blog`}
+  description={post.data.description || `${post.data.title} - Read more on Bastien Youssfi's Blog`}
   canonicalUrl={canonicalUrl}
   image={image || defaultImage}
   type="article">
   <article class="blog-container py-8 md:py-12">
     <!-- Back to Home -->
     <div class="mb-8 max-w-[65ch] mx-auto">
-      <a href="/" class="inline-flex items-center text-gray-400 hover:text-gray-200 transition-colors">
+      <a href="/" class="inline-flex items-center">
         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
         </svg>
@@ -89,7 +84,7 @@ const authorUrl = "https://example.com/about";
       </div>
       
       <!-- Social Sharing CTA -->
-      <div class="mt-16 pt-8 border-t border-gray-800">
+      <div class="mt-16 pt-8 border-t border-border-primary">
         <div class="text-center">
           <h3 class="text-xl font-medium mb-4">Share this article</h3>
           <div class="flex justify-center space-x-5">
@@ -107,7 +102,7 @@ const authorUrl = "https://example.com/about";
     "@context": "https://schema.org",
     "@type": "BlogPosting",
     "headline": post.data.title,
-    "description": post.data.description || `${post.data.title} - Read more on My Astro Blog`,
+    "description": post.data.description || `${post.data.title} - Read more on Bastien Youssfi's Blog`,
     "image": defaultImage,
     "datePublished": post.data.date.toISOString(),
     "dateModified": post.data.date.toISOString(),
@@ -118,10 +113,10 @@ const authorUrl = "https://example.com/about";
     },
     "publisher": {
       "@type": "Organization",
-      "name": "My Astro Blog",
+      "name": "Bastien Youssfi's Blog",
       "logo": {
         "@type": "ImageObject",
-        "url": "https://example.com/logo.png"
+        "url": "https://bastienyoussfi.com/logo.png"
       }
     },
     "mainEntityOfPage": {
