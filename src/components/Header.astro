@@ -4,15 +4,41 @@ import { Icon } from 'astro-icon/components';
 const currentPath = Astro.url.pathname;
 ---
 
-<header class="p-6 mb-10 mt-2 px-10">
-    <div class="flex justify-between items-center">
-        <div class="flex items-center gap-8">
+<header class="fixed top-0 left-0 right-0 z-40 bg-white/80 dark:bg-gray-950/80 backdrop-blur-md border-b border-gray-200 dark:border-gray-800 px-6 py-4">
+    <div class="max-w-7xl mx-auto flex justify-between items-center gap-4">
+        {/* Logo */}
+        <div class="flex-shrink-0">
             <h1 class="text-2xl font-bold">
                 <a href="/">BY</a>
             </h1>
         </div>
         
+        {/* Search Bar - Center */}
+        <div class="flex-1 max-w-md hidden md:block">
+            <button 
+                id="search-button"
+                class="w-full flex items-center gap-3 px-4 py-2 text-sm text-gray-500 dark:text-gray-400 bg-gray-100 dark:bg-gray-900 hover:bg-gray-200 dark:hover:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 transition-colors"
+                aria-label="Search"
+            >
+                <Icon name="lucide:search" class="w-4 h-4" />
+                <span>Search articles...</span>
+                <kbd class="ml-auto px-2 py-0.5 text-xs font-semibold text-gray-500 bg-white dark:bg-gray-950 border border-gray-300 dark:border-gray-600 rounded">
+                    ⌘K
+                </kbd>
+            </button>
+        </div>
+        
+        {/* Right Side - Social Icons */}
         <div class="flex items-center gap-4">
+            {/* Search Icon for Mobile */}
+            <button 
+                id="search-button-mobile"
+                class="md:hidden opacity-70 hover:opacity-100 transition-opacity"
+                aria-label="Search"
+            >
+                <Icon name="lucide:search" class="w-5 h-5" />
+            </button>
+            
             {/* Social Icons - Hidden on mobile to save space */}
             <nav class="hidden sm:block">
                 <ul class="flex gap-1 space-x-4 opacity-70">
@@ -42,7 +68,7 @@ const currentPath = Astro.url.pathname;
             {/* Mobile Menu Button */}
             <button 
                 id="mobile-menu-button"
-                class="md:hidden   transition-colors"
+                class="sm:hidden transition-colors"
                 aria-label="Toggle menu"
             >
                 <Icon name="lucide:menu" class="w-6 h-6" />
@@ -51,26 +77,28 @@ const currentPath = Astro.url.pathname;
     </div>
 
     {/* Mobile Menu */}
-    <nav id="mobile-menu" class="hidden md:hidden mt-6 pt-6 border-t border-gray-800">
-        <ul class="space-y-4">
-            <li class="pt-4">
-                <div class="flex gap-6">
-                    <a href="https://twitter.com/bastienyoussfi_" target="_blank" aria-label="Twitter">
-                        <Icon name="lucide:twitter" class="w-5 h-5  " />
-                    </a>
-                    <a href="https://github.com/bastienyoussfi" target="_blank" aria-label="GitHub">
-                        <Icon name="lucide:github" class="w-5 h-5  " />
-                    </a>
-                    <a href="https://www.linkedin.com/in/bastienyoussfi/" target="_blank" aria-label="LinkedIn">
-                        <Icon name="lucide:linkedin" class="w-5 h-5  " />
-                    </a>
-                    <a href="https://www.instagram.com/bastienyoussfi/" target="_blank" aria-label="Instagram">
-                        <Icon name="lucide:instagram" class="w-5 h-5  " />
-                    </a>
-                </div>
-            </li>
-        </ul>
-    </nav>
+    <div class="max-w-7xl mx-auto">
+        <nav id="mobile-menu" class="hidden sm:hidden mt-4 pt-4 border-t border-gray-200 dark:border-gray-800">
+            <ul class="space-y-4">
+                <li>
+                    <div class="flex gap-6 justify-center">
+                        <a href="https://twitter.com/bastienyoussfi_" target="_blank" aria-label="Twitter">
+                            <Icon name="lucide:twitter" class="w-5 h-5" />
+                        </a>
+                        <a href="https://github.com/bastienyoussfi" target="_blank" aria-label="GitHub">
+                            <Icon name="lucide:github" class="w-5 h-5" />
+                        </a>
+                        <a href="https://www.linkedin.com/in/bastienyoussfi/" target="_blank" aria-label="LinkedIn">
+                            <Icon name="lucide:linkedin" class="w-5 h-5" />
+                        </a>
+                        <a href="https://www.instagram.com/bastienyoussfi/" target="_blank" aria-label="Instagram">
+                            <Icon name="lucide:instagram" class="w-5 h-5" />
+                        </a>
+                    </div>
+                </li>
+            </ul>
+        </nav>
+    </div>
 </header>
 
 <script>
@@ -88,5 +116,17 @@ const currentPath = Astro.url.pathname;
         link.addEventListener('click', () => {
             mobileMenu?.classList.add('hidden');
         });
+    });
+    
+    // Search buttons - dispatch event to open modal
+    const searchButton = document.getElementById('search-button');
+    const searchButtonMobile = document.getElementById('search-button-mobile');
+    
+    searchButton?.addEventListener('click', () => {
+        window.dispatchEvent(new CustomEvent('open-search'));
+    });
+    
+    searchButtonMobile?.addEventListener('click', () => {
+        window.dispatchEvent(new CustomEvent('open-search'));
     });
 </script>

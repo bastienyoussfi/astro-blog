@@ -1,0 +1,49 @@
+---
+import Layout from '../layouts/Layout.astro';
+import SearchModal from '../components/SearchModal';
+
+// Get search query from URL parameter
+const searchParams = Astro.url.searchParams;
+const query = searchParams.get('s') || searchParams.get('q') || '';
+---
+
+<Layout 
+  title={query ? `Search results for "${query}"` : "Search"}
+  description={query ? `Search results for "${query}" on Bastien Youssfi's Blog` : "Search articles on software development, DevOps, and technology"}
+>
+  <div class="blog-container py-8 md:py-12">
+    <div class="max-w-[65ch] mx-auto">
+      <h1 class="text-4xl font-bold mb-2">Search</h1>
+      <p class="text-gray-600 dark:text-gray-400 mb-8">
+        Search through all articles and content
+      </p>
+      
+      <!-- Search Modal (always open on this page) -->
+      <SearchModal client:load isOpen={true} onClose={() => {}} initialQuery={query} />
+      
+      <!-- SEO-friendly content for crawlers -->
+      <noscript>
+        <div class="p-6 bg-gray-50 dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700">
+          <p class="text-gray-700 dark:text-gray-300">
+            This search functionality requires JavaScript to be enabled. 
+            Please enable JavaScript or browse our <a href="/" class="text-primary hover:underline">latest articles</a>.
+          </p>
+        </div>
+      </noscript>
+    </div>
+  </div>
+</Layout>
+
+<style>
+  /* Hide the search modal's backdrop on the search page since it's the main content */
+  :global(.fixed.inset-0.bg-black\/50) {
+    display: none;
+  }
+  
+  /* Make the modal appear as inline content on the search page */
+  :global(.fixed.inset-0.z-50) {
+    position: relative;
+    padding: 0;
+  }
+</style>
+

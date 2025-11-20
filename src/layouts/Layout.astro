@@ -2,6 +2,7 @@
 import Footer from '../components/Footer.astro';
 import Header from '../components/Header.astro';
 import LoadingBar from '../components/LoadingBar';
+import SearchModalWrapper from '../components/SearchModalWrapper';
 import SpeedInsights from '@vercel/speed-insights/astro';
 
 interface Props {
@@ -70,7 +71,7 @@ const websiteSchema = {
     "@type": "SearchAction",
     "target": {
       "@type": "EntryPoint",
-      "urlTemplate": `${siteUrl}/?s={search_term_string}`
+      "urlTemplate": `${siteUrl}/search?s={search_term_string}`
     },
     "query-input": "required name=search_term_string"
   },
@@ -107,7 +108,7 @@ const websiteSchema = {
     </script>
     
     <!-- Security and Performance: Content Security Policy -->
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://va.vercel-scripts.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https:; connect-src 'self' https://va.vercel-scripts.com https://vitals.vercel-insights.com;">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' 'wasm-unsafe-eval' https://va.vercel-scripts.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https:; connect-src 'self' https://va.vercel-scripts.com https://vitals.vercel-insights.com;">
     
     <!-- Performance optimizations -->
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -179,11 +180,63 @@ const websiteSchema = {
   </head>
   <body>
     <LoadingBar client:load />
+    <SearchModalWrapper client:load />
     <Header />
+    <div class="h-[80px] md:h-[73px]"></div> <!-- Spacer for fixed header -->
     <main class="blog-container px-7">
       <slot />
     </main>
     <Footer />
     <SpeedInsights />
+    
+    <!-- Search Modal Control Script -->
+    <script>
+      // Global search modal state management
+      let searchModalOpen = false;
+      
+      function openSearchModal() {
+        if (!searchModalOpen) {
+          searchModalOpen = true;
+          window.dispatchEvent(new CustomEvent('toggle-search-modal', { 
+            detail: { isOpen: true } 
+          }));
+        }
+      }
+      
+      function closeSearchModal() {
+        if (searchModalOpen) {
+          searchModalOpen = false;
+          window.dispatchEvent(new CustomEvent('toggle-search-modal', { 
+            detail: { isOpen: false } 
+          }));
+        }
+      }
+      
+      function toggleSearchModal() {
+        if (searchModalOpen) {
+          closeSearchModal();
+        } else {
+          openSearchModal();
+        }
+      }
+      
+      // Listen for Ctrl+K / Cmd+K keyboard shortcut
+      document.addEventListener('keydown', (e) => {
+        if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
+          e.preventDefault();
+          toggleSearchModal();
+        }
+      });
+      
+      // Listen for custom open-search event from header button (always open, don't toggle)
+      window.addEventListener('open-search', () => {
+        openSearchModal();
+      });
+      
+      // Listen for modal close events to sync state
+      window.addEventListener('search-modal-closed', () => {
+        searchModalOpen = false;
+      });
+    </script>
   </body>
 </html>
