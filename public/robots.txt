@@ -6,4 +6,4 @@ Allow: /blog/
 Allow: /rss.xml
 
 # Site maps
-Sitemap: https://example.com/sitemap.xml 
+Sitemap: https://bastienyoussfi.dev/sitemap.xml 

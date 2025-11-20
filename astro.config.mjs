@@ -9,7 +9,7 @@ import { rehypeHeadingLinks } from "./src/utils/rehypeHeadingLinks.js";
 import compress from "astro-compress";
 
 export default defineConfig({
-  site: "https://example.com",
+  site: "https://bastienyoussfi.dev",
   output: "static",
   compressHTML: true,
   transitions: false,
@@ -29,7 +29,7 @@ export default defineConfig({
       changefreq: "weekly",
       priority: 0.7,
       lastmod: new Date(),
-      customPages: ["https://example.com/custom-page"],
+      customPages: ["https://bastienyoussfi.dev/custom-page"],
     }),
     icon(),
     mdx(),
