@@ -2,12 +2,12 @@ import rss from "@astrojs/rss";
 import { getCollection } from "astro:content";
 
 export async function GET(context) {
-  const blog = await getCollection("blog");
+  const posts = await getCollection("posts");
   return rss({
-    title: "My Astro Blog",
-    description: "A lightning-fast, SEO-optimized blog built with Astro",
+    title: "Bastien Youssfi's Blog",
+    description: "Personal blog by Bastien Youssfi - Software engineer sharing insights on development, DevOps, and technology",
     site: context.site,
-    items: blog.map((post) => ({
+    items: posts.map((post) => ({
       title: post.data.title,
       pubDate: post.data.date,
       description: post.data.description,
