@@ -115,26 +115,42 @@ const postSection = 'Technology';
     "@type": "BlogPosting",
     "headline": post.data.title,
     "description": post.data.description || `${post.data.title} - Read more on Bastien Youssfi's Blog`,
-    "image": defaultImage,
-    "datePublished": post.data.date.toISOString(),
-    "dateModified": post.data.date.toISOString(),
+    "image": {
+      "@type": "ImageObject",
+      "url": new URL(postImage, authorUrl).href,
+      "width": 1200,
+      "height": 630
+    },
+    "datePublished": publishedTime,
+    "dateModified": modifiedTime,
     "author": {
       "@type": "Person",
+      "@id": `${authorUrl}/#person`,
       "name": authorName,
       "url": authorUrl
     },
     "publisher": {
-      "@type": "Organization",
-      "name": "Bastien Youssfi's Blog",
-      "logo": {
+      "@type": "Person",
+      "@id": `${authorUrl}/#person`,
+      "name": authorName,
+      "url": authorUrl,
+      "image": {
         "@type": "ImageObject",
-        "url": "https://bastienyoussfi.dev/images/logo.png"
+        "url": `${authorUrl}/images/logo.png`
       }
     },
     "mainEntityOfPage": {
       "@type": "WebPage",
       "@id": canonicalUrl
-    }
+    },
+    "isPartOf": {
+      "@type": "WebSite",
+      "@id": `${authorUrl}/#website`
+    },
+    "wordCount": post.body.split(/\s+/).length,
+    "keywords": postTags.join(", "),
+    "articleSection": postSection,
+    "inLanguage": "en-US"
   })}></script>
 
   <!-- Breadcrumb Structured Data (JSON-LD) -->

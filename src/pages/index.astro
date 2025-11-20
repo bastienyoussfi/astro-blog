@@ -44,6 +44,32 @@ function formatDate(date: Date) {
   image="/images/default-og.svg"
   imageAlt="Bastien Youssfi's Blog - Software Engineering and DevOps"
 >
+  <!-- Structured Data: Blog Collection -->
+  <script type="application/ld+json" set:html={JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": "Blog",
+    "@id": "https://bastienyoussfi.dev/#blog",
+    "mainEntityOfPage": {
+      "@type": "WebPage",
+      "@id": "https://bastienyoussfi.dev/"
+    },
+    "name": "Bastien Youssfi's Blog",
+    "description": "Software engineer sharing insights on development, DevOps, and technology. Explore articles on Docker, operating systems, web development, and more.",
+    "publisher": {
+      "@id": "https://bastienyoussfi.dev/#person"
+    },
+    "blogPost": allPosts.slice(0, 10).map(post => ({
+      "@type": "BlogPosting",
+      "@id": `https://bastienyoussfi.dev${post.url}`,
+      "headline": post.data.title,
+      "datePublished": post.date.toISOString(),
+      "author": {
+        "@id": "https://bastienyoussfi.dev/#person"
+      }
+    })),
+    "inLanguage": "en-US"
+  })}></script>
+
   <main class="blog-container py-8 md:py-12">
     <div class="mb-8 max-w-[65ch] mx-auto">
     {years.map(year => (

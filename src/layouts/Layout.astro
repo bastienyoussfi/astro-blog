@@ -35,6 +35,47 @@ const {
 const siteUrl = 'https://bastienyoussfi.dev';
 const siteName = 'Bastien Youssfi\'s Blog';
 const locale = 'en_US';
+
+// Structured data for Organization (used across all pages)
+const organizationSchema = {
+  "@context": "https://schema.org",
+  "@type": "Person",
+  "@id": `${siteUrl}/#person`,
+  "name": "Bastien Youssfi",
+  "url": siteUrl,
+  "image": `${siteUrl}/images/logo.png`,
+  "sameAs": [
+    "https://twitter.com/bysfdev",
+    "https://github.com/byoussfi",
+    "https://www.linkedin.com/in/bastien-youssfi",
+    "https://www.instagram.com/bastienyoussfi/",
+    "https://bastienyoussfi.com"
+  ],
+  "jobTitle": "Software Engineer",
+  "description": "Software engineer sharing insights on development, DevOps, and technology"
+};
+
+// WebSite schema with SearchAction for Google Sitelinks Search Box
+const websiteSchema = {
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "@id": `${siteUrl}/#website`,
+  "url": siteUrl,
+  "name": siteName,
+  "description": "Personal blog by Bastien Youssfi - Software engineer sharing insights on development, DevOps, and technology",
+  "publisher": {
+    "@id": `${siteUrl}/#person`
+  },
+  "potentialAction": {
+    "@type": "SearchAction",
+    "target": {
+      "@type": "EntryPoint",
+      "urlTemplate": `${siteUrl}/?s={search_term_string}`
+    },
+    "query-input": "required name=search_term_string"
+  },
+  "inLanguage": "en-US"
+};
 ---
 
 <!DOCTYPE html>
@@ -127,6 +168,12 @@ const locale = 'en_US';
     <link rel="icon" type="image/svg+xml" href="/favicon.ico" />
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
     <link rel="manifest" href="/site.webmanifest" />
+    
+    <!-- Structured Data: Organization/Person Schema -->
+    <script type="application/ld+json" set:html={JSON.stringify(organizationSchema)}></script>
+    
+    <!-- Structured Data: WebSite Schema with SearchAction (Enables Google Sitelinks Search Box) -->
+    <script type="application/ld+json" set:html={JSON.stringify(websiteSchema)}></script>
     
     <link rel="stylesheet" href="/src/styles/globals.css" />
   </head>
