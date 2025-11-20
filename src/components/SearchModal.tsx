@@ -31,23 +31,28 @@ export default function SearchModal({
   const inputRef = useRef<HTMLInputElement>(null);
   const modalRef = useRef<HTMLDivElement>(null);
 
-  // Load Pagefind
+  // Load Pagefind (only when modal is opened and in production)
   useEffect(() => {
     async function loadPagefind() {
-      if (typeof window !== "undefined") {
-        try {
-          // Dynamic import to avoid build-time resolution
-          const pagefindModule = await import(
-            /* @vite-ignore */ "/pagefind/pagefind.js"
-          );
+      if (!isOpen || typeof window === "undefined" || pagefind) return;
+      
+      try {
+        // Dynamically construct path to avoid Vite static analysis in dev mode
+        const pagefindPath = '/pagefind/pagefind.js';
+        // @ts-ignore - Dynamic import
+        const pagefindModule = await import(/* @vite-ignore */ pagefindPath).catch(() => null);
+        
+        if (pagefindModule) {
           setPagefind(pagefindModule);
-        } catch (error) {
-          console.error("Failed to load Pagefind:", error);
+        } else {
+          console.warn('Search is only available in built site. Run: npm run build && npm run preview');
         }
+      } catch (error) {
+        // Silently handle errors in dev mode
       }
     }
     loadPagefind();
-  }, []);
+  }, [isOpen, pagefind]);
 
   // Focus input when modal opens
   useEffect(() => {
@@ -125,13 +130,13 @@ export default function SearchModal({
       {/* Modal */}
       <div
         ref={modalRef}
-        className="relative w-full max-w-2xl bg-white dark:bg-gray-900 rounded-lg shadow-2xl border border-gray-200 dark:border-gray-700 overflow-hidden"
+        className="relative w-full max-w-2xl bg-white dark:bg-black rounded-lg shadow-2xl border border-gray-200 dark:border-gray-900 overflow-hidden"
         role="dialog"
         aria-modal="true"
         aria-labelledby="search-title"
       >
         {/* Search Input */}
-        <div className="flex items-center border-b border-gray-200 dark:border-gray-700 px-4">
+        <div className="flex items-center border-b border-gray-200 dark:border-gray-900 px-4">
           <svg
             className="w-5 h-5 text-gray-400"
             fill="none"
@@ -158,7 +163,7 @@ export default function SearchModal({
           {query && (
             <button
               onClick={() => setQuery("")}
-              className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 p-1"
+              className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-600 p-1"
               aria-label="Clear search"
             >
               <svg
@@ -176,7 +181,7 @@ export default function SearchModal({
               </svg>
             </button>
           )}
-          <kbd className="hidden sm:block ml-2 px-2 py-1 text-xs font-semibold text-gray-500 bg-gray-100 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded">
+          <kbd className="hidden sm:block ml-2 px-2 py-1 text-xs font-semibold text-gray-500 bg-gray-100 dark:bg-black border border-gray-200 dark:border-gray-900 rounded">
             ESC
           </kbd>
         </div>
@@ -185,7 +190,7 @@ export default function SearchModal({
         <div className="max-h-[60vh] overflow-y-auto">
           {isSearching && (
             <div className="p-8 text-center text-gray-500">
-              <div className="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900 dark:border-gray-100"></div>
+              <div className="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900 dark:border-white"></div>
             </div>
           )}
 
@@ -195,7 +200,7 @@ export default function SearchModal({
             results.length === 0 && (
               <div className="p-8 text-center text-gray-500">
                 No results found for "
-                <span className="font-medium text-gray-900 dark:text-gray-100">
+                <span className="font-medium text-gray-900 dark:text-white">
                   {query}
                 </span>
                 "
@@ -212,7 +217,7 @@ export default function SearchModal({
             <div className="p-8 text-center text-gray-500">
               <div className="mb-4">
                 <svg
-                  className="w-16 h-16 mx-auto text-gray-300 dark:text-gray-700"
+                  className="w-16 h-16 mx-auto text-gray-300 dark:text-white"
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"
@@ -225,7 +230,7 @@ export default function SearchModal({
                   />
                 </svg>
               </div>
-              <p className="text-lg font-medium text-gray-700 dark:text-gray-300 mb-2">
+              <p className="text-lg font-medium text-gray-700 dark:text-white mb-2">
                 Search articles
               </p>
               <p className="text-sm">
@@ -240,16 +245,16 @@ export default function SearchModal({
         </div>
 
         {/* Footer */}
-        <div className="border-t border-gray-200 dark:border-gray-700 px-4 py-3 flex items-center justify-between text-xs text-gray-500">
+        <div className="border-t border-gray-200 dark:border-gray-900 px-4 py-3 flex items-center justify-between text-xs text-gray-500">
           <div className="flex items-center gap-4">
             <div className="flex items-center gap-1">
-              <kbd className="px-2 py-1 bg-gray-100 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded">
+              <kbd className="px-2 py-1 bg-gray-100 dark:bg-black border border-gray-200 dark:border-gray-900 rounded">
                 ↵
               </kbd>
               <span>to select</span>
             </div>
             <div className="flex items-center gap-1">
-              <kbd className="px-2 py-1 bg-gray-100 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded">
+              <kbd className="px-2 py-1 bg-gray-100 dark:bg-black border border-gray-200 dark:border-gray-900 rounded">
                 ↑↓
               </kbd>
               <span>to navigate</span>
@@ -296,7 +301,7 @@ function SearchResults({
           key={result.url}
           href={result.url}
           onClick={onResultClick}
-          className="block px-4 py-3 hover:bg-gray-50 dark:hover:bg-gray-800 border-b border-gray-100 dark:border-gray-800 last:border-b-0 transition-colors group"
+          className="block px-4 py-3 hover:bg-gray-50 dark:hover:bg-black border-b border-gray-100 dark:border-gray-900 last:border-b-0 transition-colors group"
         >
           <div className="flex items-start gap-3">
             <div className="flex-shrink-0 mt-1">
@@ -317,14 +322,14 @@ function SearchResults({
               </div>
             </div>
             <div className="flex-1 min-w-0">
-              <h3 className="font-medium text-gray-900 dark:text-gray-100 group-hover:text-primary transition-colors line-clamp-1">
+              <h3 className="font-medium text-gray-900 dark:text-white group-hover:text-primary transition-colors line-clamp-1">
                 {result.meta.title}
               </h3>
               <p
-                className="mt-1 text-sm text-gray-600 dark:text-gray-400 line-clamp-2"
+                className="mt-1 text-sm text-gray-600 dark:text-white line-clamp-2"
                 dangerouslySetInnerHTML={{ __html: result.excerpt }}
               />
-              <p className="mt-1 text-xs text-gray-500 dark:text-gray-500">
+              <p className="mt-1 text-xs text-gray-500 dark:text-white">
                 {result.url}
               </p>
             </div>
