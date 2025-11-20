@@ -10,7 +10,7 @@ export default function Twitter({
       href={`https://twitter.com/intent/tweet?text=${encodedTitle}&url=${encodedUrl}`}
       target="_blank"
       rel="noopener noreferrer"
-      className="text-gray-400 hover:text-gray-200 transition-colors"
+      className="transition-colors"
       aria-label="Share on Twitter/X"
     >
       <svg

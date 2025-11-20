@@ -4,7 +4,7 @@ export default function LinkedIn({ encodedUrl }: { encodedUrl: string }) {
       href={`https://www.linkedin.com/sharing/share-offsite/?url=${encodedUrl}`}
       target="_blank"
       rel="noopener noreferrer"
-      className="text-gray-400 hover:text-gray-200 transition-colors"
+      className="transition-colors"
       aria-label="Share on LinkedIn"
     >
       <svg

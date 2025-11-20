@@ -4,7 +4,7 @@ export default function Facebook({ encodedUrl }: { encodedUrl: string }) {
       href={`https://www.facebook.com/sharer/sharer.php?u=${encodedUrl}`}
       target="_blank"
       rel="noopener noreferrer"
-      className="text-gray-400 hover:text-gray-200 transition-colors"
+      className="transition-colors"
       aria-label="Share on Facebook"
     >
       <svg
