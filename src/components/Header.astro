@@ -10,33 +10,6 @@ const currentPath = Astro.url.pathname;
             <h1 class="text-2xl font-bold">
                 <a href="/">BY</a>
             </h1>
-            
-            {/* Desktop Navigation Links */}
-            <nav class="hidden md:block">
-                <ul class="flex gap-6 text-sm">
-                    <li>
-                        <a 
-                            href="/" 
-                        >
-                            Blog
-                        </a>
-                    </li>
-                    <li>
-                        <a 
-                            href="/learn" 
-                        >
-                            Learn
-                        </a>
-                    </li>
-                    <li>
-                        <a 
-                            href="/projects"
-                        >
-                            Projects
-                        </a>
-                    </li>
-                </ul>
-            </nav>
         </div>
         
         <div class="flex items-center gap-4">
@@ -80,31 +53,7 @@ const currentPath = Astro.url.pathname;
     {/* Mobile Menu */}
     <nav id="mobile-menu" class="hidden md:hidden mt-6 pt-6 border-t border-gray-800">
         <ul class="space-y-4">
-            <li>
-                <a 
-                    href="/" 
-                    class={`block text-lg transition-colors ${currentPath === '/' ? 'text-white' : ' '}`}
-                >
-                    Blog
-                </a>
-            </li>
-            <li>
-                <a 
-                    href="/learn" 
-                    class={`block text-lg transition-colors ${currentPath.startsWith('/learn') ? 'text-white' : ' '}`}
-                >
-                    Learn
-                </a>
-            </li>
-            <li>
-                <a 
-                    href="/projects" 
-                    class={`block text-lg transition-colors ${currentPath.startsWith('/projects') ? 'text-white' : ' '}`}
-                >
-                    Projects
-                </a>
-            </li>
-            <li class="pt-4 border-t border-gray-800">
+            <li class="pt-4">
                 <div class="flex gap-6">
                     <a href="https://twitter.com/bastienyoussfi_" target="_blank" aria-label="Twitter">
                         <Icon name="lucide:twitter" class="w-5 h-5  " />

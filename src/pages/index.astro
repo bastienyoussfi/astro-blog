@@ -6,15 +6,7 @@ import { getReadingTime } from '../utils/articleUtils';
 
 // Get all posts from unified collection (filter out drafts)
 const allPosts = (await getCollection('posts', ({ data }) => !data.draft)).map(post => {
-  // Generate appropriate URL based on type
-  let url: string;
-  if (post.data.type === 'learn') {
-    url = `/learn/${post.data.journey}/${post.slug}`;
-  } else if (post.data.type === 'project') {
-    url = `/projects/${post.slug}`;
-  } else {
-    url = `/blog/${post.slug}`;
-  }
+  const url = `/blog/${post.slug}`;
 
   return {
     ...post,
