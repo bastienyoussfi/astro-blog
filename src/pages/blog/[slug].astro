@@ -45,18 +45,37 @@ const encodedTitle = encodeURIComponent(post.data.title);
 const encodedUrl = encodeURIComponent(currentUrl);
 
 // Extract the first image from post content or use default
-const defaultImage = '/images/default-og.jpg';
+const defaultImage = '/images/default-og.svg';
+const postImage = image || defaultImage;
+const postImageAlt = post.data.title ? `${post.data.title} - Bastien Youssfi's Blog` : 'Blog post cover image';
+
 // Author information
 const authorName = "Bastien Youssfi";
 const authorUrl = "https://bastienyoussfi.com";
+
+// Article dates for Open Graph
+const publishedTime = post.data.date.toISOString();
+const modifiedTime = post.data.updatedDate ? post.data.updatedDate.toISOString() : publishedTime;
+
+// Tags for Open Graph
+const postTags = post.data.tags || [];
+
+// Section/Category
+const postSection = 'Technology';
 ---
 
 <Layout
   title={post.data.title}
   description={post.data.description || `${post.data.title} - Read more on Bastien Youssfi's Blog`}
   canonicalUrl={canonicalUrl}
-  image={image || defaultImage}
-  type="article">
+  image={postImage}
+  imageAlt={postImageAlt}
+  type="article"
+  publishedTime={publishedTime}
+  modifiedTime={modifiedTime}
+  author={authorName}
+  tags={postTags}
+  section={postSection}>
   <article class="blog-container py-8 md:py-12">
     <!-- Back to Home -->
     <div class="mb-8 max-w-[65ch] mx-auto">

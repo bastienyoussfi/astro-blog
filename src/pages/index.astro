@@ -38,7 +38,12 @@ function formatDate(date: Date) {
 }
 ---
 
-<Layout title="Bastien Youssfi's Blog">
+<Layout 
+  title="Bastien Youssfi's Blog"
+  description="Software engineer sharing insights on development, DevOps, and technology. Explore articles on Docker, operating systems, web development, and more."
+  image="/images/default-og.svg"
+  imageAlt="Bastien Youssfi's Blog - Software Engineering and DevOps"
+>
   <main class="blog-container py-8 md:py-12">
     <div class="mb-8 max-w-[65ch] mx-auto">
     {years.map(year => (
