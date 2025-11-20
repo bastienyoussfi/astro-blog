@@ -51,14 +51,14 @@ function formatDate(date: Date) {
     <div class="mb-8 max-w-[65ch] mx-auto">
     {years.map(year => (
       <section class="mb-12">
-        <h2 class="text-7xl font-bold text-gray-100 mb-8">{year}</h2>
+        <h2 class="text-7xl font-bold mb-8">{year}</h2>
         <ul class="space-y-6">
           {postsByYear[year].map(post => (
             <li>
               <a href={post.url} class="block hover:opacity-100 opacity-70 transition-opacity">
                 <div class="flex flex-col">
                   <h3 class="text-xl font-medium">{post.data.title}</h3>
-                  <div class="text-sm text-gray-500 mt-1">
+                  <div class="text-sm mt-1">
                     {formatDate(post.date)} · {post.readingTime}
                   </div>
                 </div>
