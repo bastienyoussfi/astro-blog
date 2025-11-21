@@ -4,6 +4,7 @@ import Header from '../components/Header.astro';
 import LoadingBar from '../components/LoadingBar';
 import SearchModalWrapper from '../components/SearchModalWrapper';
 import SpeedInsights from '@vercel/speed-insights/astro';
+import Analytics from '@vercel/analytics/astro'
 
 interface Props {
   title: string;
@@ -188,6 +189,7 @@ const websiteSchema = {
     </main>
     <Footer />
     <SpeedInsights />
+    <Analytics />
     
     <!-- Search Modal Control Script -->
     <script>
