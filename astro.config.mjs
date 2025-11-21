@@ -17,7 +17,6 @@ export default defineConfig({
     plugins: [tailwindcss()],
     build: {
       minify: true,
-      cssMinify: false,
       rollupOptions: {
         external: ['/pagefind/pagefind.js'],
       },
