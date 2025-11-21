@@ -1,9 +1,16 @@
 {
-  "name": "My Astro Blog",
-  "short_name": "Astro Blog",
-  "description": "A lightning-fast, SEO-optimized blog built with Astro",
+  "name": "Bastien Youssfi's Blog",
+  "short_name": "BY Blog",
+  "description": "Personal blog by Bastien Youssfi - Software engineer sharing insights on development, DevOps, and technology",
   "start_url": "/",
   "theme_color": "#111827",
   "background_color": "#111827",
-  "display": "standalone"
+  "display": "standalone",
+  "icons": [
+    {
+      "src": "/favicon.ico",
+      "sizes": "any",
+      "type": "image/x-icon"
+    }
+  ]
 }
