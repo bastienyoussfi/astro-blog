@@ -4,7 +4,8 @@ import Header from '../components/Header.astro';
 import LoadingBar from '../components/LoadingBar';
 import SearchModalWrapper from '../components/SearchModalWrapper';
 import SpeedInsights from '@vercel/speed-insights/astro';
-import Analytics from '@vercel/analytics/astro'
+import Analytics from '@vercel/analytics/astro';
+import '../styles/globals.css';
 
 interface Props {
   title: string;
@@ -177,8 +178,6 @@ const websiteSchema = {
     
     <!-- Structured Data: WebSite Schema with SearchAction (Enables Google Sitelinks Search Box) -->
     <script type="application/ld+json" set:html={JSON.stringify(websiteSchema)}></script>
-    
-    <link rel="stylesheet" href="/src/styles/globals.css" />
   </head>
   <body>
     <LoadingBar client:load />
