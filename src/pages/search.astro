@@ -7,9 +7,10 @@ const searchParams = Astro.url.searchParams;
 const query = searchParams.get('s') || searchParams.get('q') || '';
 ---
 
-<Layout 
+<Layout
   title={query ? `Search results for "${query}"` : "Search"}
   description={query ? `Search results for "${query}" on Bastien Youssfi's Blog` : "Search articles on software development, DevOps, and technology"}
+  canonicalUrl="https://bastienyoussfi.dev/search/"
 >
   <div class="blog-container py-8 md:py-12">
     <div class="max-w-[65ch] mx-auto">

@@ -1,5 +1,5 @@
 ---
-title: Caching 101 and What Even Is Cache
+title: Caching 101
 type: "learn"
 date: 2025-11-19
 description: Caching, a multi-layered strategy that happens at every level of your infrastructure
@@ -16,9 +16,9 @@ tags:
   - learning
 ---
 
-# Caching 101: A beginner's point of view
+# A beginner's point of view
 
-After spending countless hours optimizing my AI-powered applications and dealing with ElevenLabs API rate limits, I've learned that caching is far more nuanced than most developers think. Sure, we all know it's about "storing stuff to make things faster," but the reality is much more complex and fascinating. Let me share what I've discovered about caching servers and the entire caching ecosystem.
+After spending countless hours optimizing my AI-powered applications and dealing with API rate limits, I've learned that caching is far more nuanced than most developers think. Sure, we all know it's about "storing stuff to make things faster," but the reality is much more complex and fascinating. I’m sharing everything today so you might avoid doing the same mistakes in the future. By the end of this article you’ll know it all about caching.
 
 ## The Cache Misconception
 
@@ -46,7 +46,7 @@ Working with various projects has taught me that caching isn't monolithic. Each 
 
 ## The Art of Cache Invalidation
 
-Phil Karlton famously said there are only two hard things in computer science: cache invalidation and naming things. After accidentally serving week-old data to a client because of aggressive caching, I can confirm the first part is absolutely true.
+Phil Karlton famously said **there are only two hard things in computer science: cache invalidation and naming things**. After accidentally serving week-old data to a client because of aggressive caching, I can confirm the first part is absolutely true.
 
 **Cache invalidation is about knowing when your cached data is no longer valid and needs refreshing**. The simplest approach is TTL or Time-To-Live, where content expires after a set duration. But this means you might serve stale content until expiry, or unnecessarily refetch fresh content.
 
@@ -147,7 +147,7 @@ Cache poisoning attacks involve tricking your cache into storing malicious conte
 
 Always validate that your caching layers respect security headers. CORS headers, in particular, must be properly cached to avoid access control bypasses.
 
-## The Bottom Line
+## The Conclusion
 
 Caching is a fundamental optimization that goes far beyond simple key-value storage. **It's a multi-layered strategy that requires understanding your content, your users, and your infrastructure**.
 

@@ -36,11 +36,12 @@ const components = {
   PartnerLink
 };
 
-// Get current URL and canonical URL for sharing
+// Get current URL for sharing
 const currentUrl = Astro.url.href;
 
-// Set canonical URL based on content type
-let canonicalUrl = currentUrl;
+// Set canonical URL explicitly to avoid duplicate content issues
+const siteUrl = 'https://bastienyoussfi.dev';
+const canonicalUrl = `${siteUrl}/blog/${post.slug}/`;
 
 const encodedTitle = encodeURIComponent(post.data.title);
 const encodedUrl = encodeURIComponent(currentUrl);

@@ -13,6 +13,9 @@ export default defineConfig({
   output: "static",
   compressHTML: true,
   transitions: false,
+  redirects: {
+    "/custom-page": "/",
+  },
   vite: {
     plugins: [tailwindcss()],
     build: {
@@ -27,11 +30,10 @@ export default defineConfig({
       include: ["**/*.tsx", "**/*.jsx"],
     }),
     sitemap({
-      filter: (page) => !page.includes("private"),
+      filter: (page) => !page.includes("private") && !page.includes("custom-page"),
       changefreq: "weekly",
       priority: 0.7,
       lastmod: new Date(),
-      customPages: ["https://bastienyoussfi.dev/custom-page"],
     }),
     icon(),
     mdx(),
